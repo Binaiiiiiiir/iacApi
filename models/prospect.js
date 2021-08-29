@@ -35,8 +35,9 @@ const prospectSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  commentaire: {
+  comment: {
     type: String,
+    default: "nothing yet",
   },
 });
 
@@ -49,7 +50,9 @@ prospectSchema.method("transform", function () {
   //
   obj.cours.id = obj.cours._id;
   delete obj.cours._id;
-
+  //
+  obj.city.id = obj.city._id;
+  delete obj.city._id;
   return obj;
 });
 

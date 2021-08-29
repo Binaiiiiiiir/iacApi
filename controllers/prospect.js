@@ -1,7 +1,21 @@
 const Prospect = require("../models/prospect");
-const Cours = require("../models/cours");
-const cours = require("../models/cours");
-const { formidable } = require("formidable");
+const formidable = require("formidable");
+const _ = require("lodash");
+
+exports.getProspectById = (req, res, next, id) => {
+  Prospect.findById(id)
+    .populate("city", "name")
+    .populate("cours", "  name")
+    .exec((err, prospect) => {
+      if (err) {
+        return res.status(400).json({ error: "Prospect not found" });
+      }
+      req.prospect = prospect;
+      // res.json(prospect);
+      next();
+    });
+};
+
 exports.createStudents = async (req, res) => {
   const studentsExists = await Prospect.findOne({
     phoneNumber: req.body.phoneNumber,
@@ -20,23 +34,39 @@ exports.createStudents = async (req, res) => {
 
 exports.getStudents = (req, res) => {
   Prospect.find()
-    .populate("cours", "id name")
+    .populate("city", "name")
+    .populate("cours", "  name")
 
     .then((data) => {
       let formatData = [];
+
       for (let i = 0; i < data.length; i++) {
-        let cours = [];
+        // let city = data[i].city.transform();
         for (let j = 0; j < data[i].cours.length; j++) {
           data[i].cours[j] = data[i].cours[j].transform();
         }
+        // data[i].city = city;
+        // console.log(city, data[i].city);
+
         formatData.push(data[i].transform());
       }
 
-      // console.log(formatData[0].cours.length);
       res.set("Content-Range", `0-2/${data.length}`);
       res.status(200).json(formatData);
     })
     .catch((err) => {
       console.log(err);
     });
+};
+
+exports.updateProspect = (req, res) => {
+  let prospect = req.prospect;
+  prospect = _.extend(prospect, req.body);
+  prospect.save((err, prospect) => {
+    if (err) {
+      return res.status(403).json({ error: err });
+    }
+
+    res.json(prospect);
+  });
 };
