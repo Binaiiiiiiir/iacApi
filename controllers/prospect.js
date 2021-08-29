@@ -6,13 +6,14 @@ exports.createStudents = async (req, res) => {
   const studentsExists = await Prospect.findOne({ id: req.body.id });
   if (studentsExists) {
     return res.status(403).json({
-      error: "CIN exisit in system contact us if you have problem",
+      error: "sorry something went worng try again later",
+      status: 400,
     });
   }
 
   const prospect = await new Prospect(req.body);
   await prospect.save();
-  res.status(200).json({ message: req.body });
+  res.status(200).json({ message: "operation succeded", status: 200 });
 };
 
 exports.getStudents = (req, res) => {
