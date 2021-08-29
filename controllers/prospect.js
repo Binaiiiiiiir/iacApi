@@ -6,7 +6,7 @@ exports.createStudents = async (req, res) => {
   const studentsExists = await Prospect.findOne({ id: req.body.id });
   if (studentsExists) {
     return res.status(403).json({
-      error: "sorry something went worng try again later",
+      message: "sorry something went worng try again later",
       status: 400,
     });
   }
