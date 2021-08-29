@@ -3,7 +3,9 @@ const Cours = require("../models/cours");
 const cours = require("../models/cours");
 const { formidable } = require("formidable");
 exports.createStudents = async (req, res) => {
-  const studentsExists = await Prospect.findOne({ id: req.body.id });
+  const studentsExists = await Prospect.findOne({
+    phoneNumber: req.body.phoneNumber,
+  });
   if (studentsExists) {
     return res.status(403).json({
       message: "sorry something went worng try again later",
