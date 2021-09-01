@@ -6,19 +6,23 @@ exports.getProspectById = (req, res, next, id) => {
   Prospect.findById(id)
     .populate("city", "name")
     .populate("cours", "  name")
-    .exec((err, prospect) => {
+    .exec((err, data) => {
       if (err) {
         return res.status(400).json({ error: "Prospect not found" });
       }
-      req.prospect = prospect;
-      res.json(prospect);
+      req.prospect = data;
+      for (let i = 0; i < data.cours.length; i++) {
+        data.cours[i] = data.cours[i].transform();
+      }
+
+      res.json(data.transform());
       next();
     });
 };
 
-exports.getOneProspect = (res, req) => {
-  let pros = req.prospect;
-};
+// exports.getOneProspect = (res, req) => {
+//   let pros = req.prospect;
+// };
 
 exports.createStudents = async (req, res) => {
   const studentsExists = await Prospect.findOne({
