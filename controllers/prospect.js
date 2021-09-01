@@ -11,9 +11,13 @@ exports.getProspectById = (req, res, next, id) => {
         return res.status(400).json({ error: "Prospect not found" });
       }
       req.prospect = prospect;
-      // res.json(prospect);
+      res.json(prospect);
       next();
     });
+};
+
+exports.getOneProspect = (res, req) => {
+  let pros = req.prospect;
 };
 
 exports.createStudents = async (req, res) => {
@@ -51,7 +55,7 @@ exports.getStudents = (req, res) => {
         formatData.push(data[i].transform());
       }
 
-      res.set("Content-Range", `0-2/${data.length}`);
+      res.set("Content-Range", `0-10/${data.length}`);
       res.status(200).json(formatData);
     })
     .catch((err) => {
@@ -70,3 +74,5 @@ exports.updateProspect = (req, res) => {
     res.json(prospect);
   });
 };
+
+exports.getPospectById = (req, res) => {};

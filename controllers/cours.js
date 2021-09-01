@@ -1,12 +1,12 @@
 const Cours = require("../models/cours");
 
 exports.createCours = async (req, res) => {
-  const coursExists = await Cours.findOne({ id: req.body.id });
-  if (coursExists) {
-    return res.status(403).json({
-      error: "cours id all ready used",
-    });
-  }
+  // const coursExists = await Cours.findOne({ id: req.body.id });
+  // if (coursExists) {
+  //   return res.status(403).json({
+  //     error: "cours id all ready used",
+  //   });
+  // }
 
   const cours = await new Cours(req.body);
   await cours.save();
