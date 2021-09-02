@@ -9,7 +9,7 @@ const cors = require("cors");
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "PUT", "POST", "DELETE", "OPTION"],
+    methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Range"],
     exposedHeaders: ["Content-Range", "X-Content-Range"],
     credentials: true,
