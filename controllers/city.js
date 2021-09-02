@@ -61,8 +61,8 @@ exports.deleteCity = (req, res) => {
       return res.status(400).json({ error: err });
     }
 
-    res.json({
-      message: "city deleted successfully",
-    });
+    // res.json({
+    //   message: "city deleted successfully",
+    // });
   });
 };
