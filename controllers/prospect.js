@@ -59,7 +59,7 @@ exports.getStudents = (req, res) => {
         formatData.push(data[i].transform());
       }
 
-      res.set("Content-Range", `0-10/${data.length}`);
+      res.set("Content-Range", `0-  /${data.length}`);
       res.status(200).json(formatData);
     })
     .catch((err) => {
