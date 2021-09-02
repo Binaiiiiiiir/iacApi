@@ -47,7 +47,7 @@ exports.getStudents = (req, res) => {
 
     .then((data) => {
       let formatData = [];
-
+      res.set("Content-Range", `0-10/${data.length}`);
       for (let i = 0; i < data.length; i++) {
         // let city = data[i].city.transform();
         for (let j = 0; j < data[i].cours.length; j++) {
