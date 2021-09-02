@@ -48,8 +48,11 @@ prospectSchema.method("transform", function () {
   obj.id = obj._id;
   delete obj._id;
   //
-  obj.cours.id = obj.cours._id;
-  delete obj.cours._id;
+  if (obj.cours._id) {
+    obj.cours.id = obj.cours._id;
+    delete obj.cours._id;
+  }
+
   //
   obj.city.id = obj.city._id;
   delete obj.city._id;
