@@ -4,7 +4,6 @@ const {
   createStudents,
   getProspectById,
   updateProspect,
-  getOneProspect,
 } = require("../controllers/prospect");
 
 const router = express.Router();

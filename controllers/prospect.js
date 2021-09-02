@@ -14,7 +14,7 @@ exports.getProspectById = (req, res, next, id) => {
       for (let i = 0; i < data.cours.length; i++) {
         data.cours[i] = data.cours[i].transform();
       }
-      res.set("Content-Range", `0-10/${data.length}`);
+      res.set("Content-Range", `0-1/${data.length}`);
       res.json(data.transform());
       next();
     });
@@ -72,11 +72,9 @@ exports.updateProspect = (req, res) => {
   prospect = _.extend(prospect, req.body);
   prospect.save((err, prospect) => {
     if (err) {
-      return res.status(403).json({ error: err });
+      return recs.status(403).json({ error: err });
     }
 
-    res.json(prospect);
+    // res.json(prospect);
   });
 };
-
-exports.getPospectById = (req, res) => {};
