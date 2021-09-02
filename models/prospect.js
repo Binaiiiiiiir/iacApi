@@ -44,7 +44,7 @@ const prospectSchema = new mongoose.Schema({
 prospectSchema.method("transform", function () {
   var obj = this.toObject();
 
-  //Rename fields
+  //Rename fieldss
   obj.id = obj._id;
   delete obj._id;
   //
@@ -53,7 +53,6 @@ prospectSchema.method("transform", function () {
     delete obj.cours._id;
   }
 
-  //
   obj.city.id = obj.city._id;
   delete obj.city._id;
   return obj;
