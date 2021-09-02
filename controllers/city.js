@@ -52,3 +52,17 @@ exports.updateCity = (req, res) => {
     // return res.status(200).json(city);
   });
 };
+
+exports.deleteCity = (req, res) => {
+  let city = req.city;
+
+  city.remove((err, city) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    }
+
+    res.json({
+      message: "city deleted successfully",
+    });
+  });
+};
