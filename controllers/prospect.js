@@ -14,7 +14,7 @@ exports.getProspectById = (req, res, next, id) => {
       for (let i = 0; i < data.cours.length; i++) {
         data.cours[i] = data.cours[i].transform();
       }
-
+      res.set("Content-Range", `0-10/${data.length}`);
       res.json(data.transform());
       next();
     });
