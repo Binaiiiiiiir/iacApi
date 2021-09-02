@@ -12,7 +12,7 @@ exports.createCity = async (req, res) => {
   res.status(200).json({ message: req.body });
 };
 
-exports.getCitys = (req, res) => {
+exports.getCities = (req, res) => {
   City.find()
     .then((data) => {
       let formatData = [];

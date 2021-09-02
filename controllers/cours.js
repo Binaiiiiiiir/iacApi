@@ -15,6 +15,7 @@ exports.createCours = async (req, res) => {
 
 exports.getcourses = (req, res) => {
   Cours.find()
+    .sort("-coursType")
     .then((data) => {
       let formatData = [];
       for (let i = 0; i < data.length; i++) {
