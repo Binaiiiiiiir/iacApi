@@ -75,7 +75,7 @@ exports.updateProspect = (req, res) => {
       return recs.status(403).json({ error: err });
     }
 
-    res.json(prospect);
+    // res.json(prospect);
   });
 };
 
