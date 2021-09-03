@@ -78,3 +78,17 @@ exports.updateProspect = (req, res) => {
     res.json(prospect);
   });
 };
+
+exports.deleteProspect = (req, res) => {
+  let prospect = req.prospect;
+
+  prospect.remove((err, prospect) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    }
+
+    // res.json({
+    //   message: "prospect deleted successfully",
+    // });
+  });
+};
