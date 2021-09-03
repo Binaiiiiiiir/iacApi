@@ -45,16 +45,21 @@ prospectSchema.method("transform", function () {
   var obj = this.toObject();
 
   //Rename fieldss
-  obj.id = obj._id;
-  delete obj._id;
-  //
-  if (obj.cours._id) {
-    obj.cours.id = obj.cours._id;
-    delete obj.cours._id;
+  if (obj._id) {
+    obj.id = obj._id;
+    delete obj._id;
+    if (obj.cours._id) {
+      obj.cours.id = obj.cours._id;
+      delete obj.cours._id;
+    }
+    if (obj.city._id) {
+      obj.city.id = obj.city._id;
+      delete obj.city._id;
+    }
   }
 
-  obj.city.id = obj.city._id;
-  delete obj.city._id;
+  //
+
   return obj;
 });
 
