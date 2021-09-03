@@ -70,7 +70,7 @@ exports.getStudents = (req, res) => {
 exports.updateProspect = (req, res) => {
   let prospect = req.prospect;
   prospect = _.extend(prospect, req.body);
-  prospect.transform().save((err, prospect) => {
+  prospect.save((err, prospect) => {
     if (err) {
       return recs.status(403).json({ error: err });
     }
