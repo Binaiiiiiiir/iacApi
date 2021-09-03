@@ -9,7 +9,7 @@ const {
 
 const router = express.Router();
 
-router.post("/courses   ", createCours);
+router.post("/courses", createCours);
 router.get("/courses", getcourses);
 router.get("/courses/:coursId", coursById);
 router.put("/courses/:coursId", updateCours);
