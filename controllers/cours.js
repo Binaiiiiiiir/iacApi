@@ -1,4 +1,5 @@
 const Cours = require("../models/cours");
+const _ = require("lodash");
 
 exports.createCours = async (req, res) => {
   // const coursExists = await Cours.findOne({ id: req.body.id });
@@ -27,4 +28,41 @@ exports.getcourses = (req, res) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+exports.coursById = (req, res, next, id) => {
+  Cours.findById(id).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Cours not found" });
+    }
+    req.cours = data;
+    res.json(data.transform());
+
+    next();
+  });
+};
+
+exports.updateCours = (req, res) => {
+  let cours = req.cours;
+  cours = _.extend(cours, req.body);
+  cours.save((err, cours) => {
+    if (err) {
+      return res.status(403).json({ error: err });
+    }
+    // return res.status(200).json(cours);
+  });
+};
+
+exports.deleteCours = (req, res) => {
+  let cours = req.cours;
+
+  cours.remove((err, cours) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    }
+
+    // res.json({
+    //   message: "cours deleted successfully",
+    // });
+  });
 };
