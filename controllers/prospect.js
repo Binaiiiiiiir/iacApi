@@ -75,9 +75,10 @@ exports.getStudents = (req, res) => {
 
 exports.updateProspect = (req, res) => {
   let prospect = req.prospect;
-  prospect.city = prospect.city._id;
-  console.log(prospect);
-  prospect = _.extend(prospect, req.body);
+  let newProspect = req.body;
+  newProspect.city = newProspect.city.id;
+  console.log(newProspect);
+  prospect = _.extend(prospect, newProspect);
   prospect.save((err, prospect) => {
     if (err) {
       return res.status(403).json({ error: err });
