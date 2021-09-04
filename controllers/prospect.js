@@ -16,11 +16,13 @@ const _ = require("lodash");
 exports.getProspectById = (req, res, next, id) => {
   Prospect.findById(id)
     .populate("city", "name")
+
     // .populate("cours", "  name")
     .exec((err, data) => {
       if (err) {
         return res.status(400).json({ error: "Prospect not found" });
       }
+
       req.prospect = data;
       // for (let i = 0; i < data.cours.length; i++) {
       //   data.cours[i] = data.cours[i].transform();
@@ -48,10 +50,16 @@ exports.createStudents = async (req, res) => {
 };
 
 exports.getStudents = (req, res) => {
+  let range = req.query.range || "[0, 9]";
+  let count;
+  range = JSON.parse(range);
+  Prospect.countDocuments(function (err, c) {
+    count = c;
+  });
   Prospect.find()
+    .skip(range[0])
+    .limit(range[1])
     .populate("city", "name")
-    // .populate("cours", "  name")
-
     .then((data) => {
       let formatData = [];
       // res.set("Content-Range", `0-10/${data.length}`);
@@ -65,7 +73,7 @@ exports.getStudents = (req, res) => {
 
         formatData.push(data[i].transform());
       }
-      res.set("Content-Range", `0-5 /${data.length}`);
+      res.set("Content-Range", `prospect ${range[0]}-${range[1]}/${count}`);
       res.status(200).json(formatData);
     })
     .catch((err) => {
