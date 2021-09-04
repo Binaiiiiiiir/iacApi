@@ -6,6 +6,7 @@ const {
   updateCity,
   deleteCity,
 } = require("../controllers/city");
+
 const router = express.Router();
 router.post("/cities", createCity);
 router.get("/cities", getCities);
