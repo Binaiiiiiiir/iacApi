@@ -5,15 +5,15 @@ const _ = require("lodash");
 exports.getProspectById = (req, res, next, id) => {
   Prospect.findById(id)
     .populate("city", "name")
-    .populate("cours", "  name")
+    // .populate("cours", "  name")
     .exec((err, data) => {
       if (err) {
         return res.status(400).json({ error: "Prospect not found" });
       }
       req.prospect = data;
-      for (let i = 0; i < data.cours.length; i++) {
-        data.cours[i] = data.cours[i].transform();
-      }
+      // for (let i = 0; i < data.cours.length; i++) {
+      //   data.cours[i] = data.cours[i].transform();
+      // }
       res.set("Content-Range", `0-1/${data.length}`);
       res.json(data.transform());
       next();
