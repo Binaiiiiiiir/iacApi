@@ -43,16 +43,18 @@ exports.createStudents = async (req, res) => {
 exports.getStudents = (req, res) => {
   Prospect.find()
     .populate("city", "name")
-    .populate("cours", "  name")
+    // .populate("cours", "  name")
 
     .then((data) => {
       let formatData = [];
       res.set("Content-Range", `0-10/${data.length}`);
       for (let i = 0; i < data.length; i++) {
         // let city = data[i].city.transform();
-        for (let j = 0; j < data[i].cours.length; j++) {
-          data[i].cours[j] = data[i].cours[j].transform();
-        }
+
+        // for (let j = 0; j < data[i].cours.length; j++) {
+        //   data[i].cours[j] = data[i].cours[j].transform();
+        // }
+
         // data[i].city = city;
         // console.log(city, data[i].city);
 
