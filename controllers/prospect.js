@@ -59,7 +59,6 @@ exports.getStudents = (req, res) => {
     count = c;
   });
   Prospect.find()
-
     .skip(range[0])
     .limit(range[1] + 1 - range[0])
     .populate("city", "name")
