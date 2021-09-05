@@ -35,6 +35,10 @@ const prospectSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  RegisteredAt: {
+    type: Date,
+    default: Date.now(),
+  },
   comment: {
     type: String,
     default: "nothing yet",

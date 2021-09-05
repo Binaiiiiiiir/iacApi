@@ -50,15 +50,20 @@ exports.createStudents = async (req, res) => {
 };
 
 exports.getStudents = (req, res) => {
-  let range = req.query.range || "[0,4]";
+  let range = req.query.range || "[0,9]";
+  let sort = req.query.sort || '["RegisteredAt" , "DESC"]';
   let count;
   // let page = 5;
   // let prePage = 0;
   range = JSON.parse(range);
+  sort = JSON.parse(sort);
   Prospect.countDocuments(function (err, c) {
     count = c;
   });
+  let map = new Map([sort]);
+  console.log(Object.fromEntries(map));
   Prospect.find()
+    .sort(Object.fromEntries(map))
     .skip(range[0])
     .limit(range[1] + 1 - range[0])
     .populate("city", "name")
