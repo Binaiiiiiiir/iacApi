@@ -59,6 +59,16 @@ exports.getStudents = (req, res) => {
   range = JSON.parse(range);
   sort = JSON.parse(sort);
   filter = JSON.parse(filter);
+  if (filter.name) {
+    filter.name = { $regex: ".*" + filter.name + ".*" };
+  }
+  if (filter.email) {
+    filter.email = { $regex: ".*" + filter.email + ".*" };
+  }
+  if (filter.comment) {
+    filter.comment = { $regex: ".*" + filter.comment + ".*" };
+  }
+  console.log(filter);
   Prospect.countDocuments(function (err, c) {
     count = c;
   });
