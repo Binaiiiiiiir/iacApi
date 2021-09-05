@@ -22,10 +22,34 @@ const teacherSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
-  course: {
-    type: [ObjectId],
-    ref: Cours,
-  },
+  cours: [
+    {
+      type: ObjectId,
+      require: true,
+      ref: Cours,
+    },
+  ],
 });
 
+teacherSchema.method("transform", function () {
+  var obj = this.toObject();
+
+  //Rename fieldss
+  if (obj._id) {
+    obj.id = obj._id;
+    delete obj._id;
+    // if (obj.cours) {
+    //   obj.cours.id = obj.cours._id;
+    //   delete obj.cours._id;
+    // }
+    // if (obj.city) {
+    //   obj.city.id = obj.city._id;
+    //   delete obj.city._id;
+    // }
+  }
+
+  //
+
+  return obj;
+});
 module.exports = mongoose.model("Teacher", teacherSchema);

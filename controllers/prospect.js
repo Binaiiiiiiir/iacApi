@@ -50,18 +50,22 @@ exports.createStudents = async (req, res) => {
 };
 
 exports.getStudents = (req, res) => {
-  let range = req.query.range || "[0, 9]";
+  let range = req.query.range || "[0,4]";
   let count;
+  // let page = 5;
+  // let prePage = 0;
   range = JSON.parse(range);
   Prospect.countDocuments(function (err, c) {
     count = c;
   });
   Prospect.find()
+
     .skip(range[0])
-    .limit(range[1])
+    .limit(range[1] + 1 - range[0])
     .populate("city", "name")
     .then((data) => {
       let formatData = [];
+      console.log(data.length, range);
       // res.set("Content-Range", `0-10/${data.length}`);
       for (let i = 0; i < data.length; i++) {
         // let city = data[i].city.transform();
@@ -73,7 +77,7 @@ exports.getStudents = (req, res) => {
 
         formatData.push(data[i].transform());
       }
-      res.set("Content-Range", `prospect ${range[0]}-${range[1]}/${count}`);
+      res.set("Content-Range", `prospect ${range[0]}-${range[1] + 1}/${count}`);
       res.status(200).json(formatData);
     })
     .catch((err) => {

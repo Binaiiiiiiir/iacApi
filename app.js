@@ -42,11 +42,13 @@ const authRouter = require("./routes/auth");
 const prospect = require("./routes/prospect");
 const cours = require("./routes/cours");
 const city = require("./routes/city");
+const teacher = require("./routes/teacher");
 
 app.use("/", authRouter);
 app.use("/", prospect);
 app.use("/", cours);
 app.use("/", city);
+app.use("/", teacher);
 // app.get("/products", cors(), function (req, res, next) {
 //   res.json({ msg: "This is CORS-enabled for a Single Route" });
 // });
