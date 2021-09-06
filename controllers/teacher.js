@@ -41,6 +41,9 @@ exports.getTeacher = (req, res) => {
   if (filter.name) {
     filter.name = { $regex: ".*" + filter.name + ".*" };
   }
+  if (filter.cin) {
+    filter.cin = { $regex: ".*" + filter.cin + ".*" };
+  }
   Teacher.countDocuments(function (err, c) {
     count = c;
   });
