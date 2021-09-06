@@ -38,7 +38,7 @@ exports.getTeacher = (req, res) => {
   if (filter.name) {
     filter.name = { $regex: ".*" + filter.name + ".*" };
   }
-  Cours.countDocuments(function (err, c) {
+  Teacher.countDocuments(function (err, c) {
     count = c;
   });
   let map = new Map([sort]);
