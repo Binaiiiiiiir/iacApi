@@ -68,12 +68,10 @@ exports.getStudents = (req, res) => {
   if (filter.comment) {
     filter.comment = { $regex: ".*" + filter.comment + ".*" };
   }
-  console.log(filter);
   Prospect.countDocuments(function (err, c) {
     count = c;
   });
   let map = new Map([sort]);
-  console.log(Object.fromEntries(map));
   Prospect.find(filter)
     .sort(Object.fromEntries(map))
     .skip(range[0])
@@ -82,15 +80,7 @@ exports.getStudents = (req, res) => {
     .then((data) => {
       let formatData = [];
       console.log(data.length, range);
-      // res.set("Content-Range", `0-10/${data.length}`);
       for (let i = 0; i < data.length; i++) {
-        // let city = data[i].city.transform();
-        // for (let j = 0; j < data[i].cours.length; j++) {
-        //   data[i].cours[j] = data[i].cours[j].transform();
-        // }
-        // data[i].city = city;
-        // console.log(city, data[i].city);
-
         formatData.push(data[i].transform());
       }
       res.set("Content-Range", `prospect ${range[0]}-${range[1] + 1}/${count}`);
