@@ -35,6 +35,9 @@ exports.getTeacher = (req, res) => {
   range = JSON.parse(range);
   sort = JSON.parse(sort);
   filter = JSON.parse(filter);
+  if (filter.email) {
+    filter.email = { $regex: ".*" + filter.email + ".*" };
+  }
   if (filter.name) {
     filter.name = { $regex: ".*" + filter.name + ".*" };
   }
