@@ -44,12 +44,13 @@ exports.getTeacher = (req, res) => {
 
 exports.updateTeacher = (req, res) => {
   let teacher = req.teacher;
-  teacher = _.extend(teacher, req.teacher);
+  teacher = _.extend(teacher, req.body);
+  console.log(teacher);
   teacher.save((err, teacher) => {
     if (err) {
       return res.status(403).json({ error: err });
     }
-    // return res.status(200).json(teacher);
+    // return res.status(200).json(city);
   });
 };
 
