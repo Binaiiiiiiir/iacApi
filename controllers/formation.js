@@ -35,8 +35,11 @@ exports.getFormations = (req, res) => {
   range = JSON.parse(range);
   sort = JSON.parse(sort);
   filter = JSON.parse(filter);
-  if (filter.name) {
-    filter.name = { $regex: ".*" + filter.name + ".*" };
+  if (filter.label) {
+    filter.label = { $regex: ".*" + filter.label + ".*" };
+  }
+  if (filter.description) {
+    filter.description = { $regex: ".*" + filter.description + ".*" };
   }
   Formation.countDocuments(function (err, c) {
     count = c;
