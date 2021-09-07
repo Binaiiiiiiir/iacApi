@@ -1,16 +1,28 @@
 const mongoose = require("mongoose");
 
-const formtionSchema = new mongoose.Schema({
+const formationSchema = new mongoose.Schema({
   label: {
     type: String,
     require: true,
     trim: true,
+    uppercase: true,
+  },
+  description: {
+    type: String,
   },
   price: {
-    type: String,
+    type: Number,
     require: true,
-    trim: true,
   },
 });
+formationSchema.method("transform", function () {
+  var obj = this.toObject();
 
-module.exports = mongoose.model("Formation", formtionSchema);
+  //Rename fields
+  obj.id = obj._id;
+  delete obj._id;
+
+  return obj;
+});
+
+module.exports = mongoose.model("Formation", formationSchema);

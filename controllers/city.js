@@ -2,8 +2,8 @@ const City = require("../models/city");
 const _ = require("lodash");
 
 exports.createCity = async (req, res) => {
-  const coursExists = await City.findOne({ name: req.body.name });
-  if (coursExists) {
+  const cityExists = await City.findOne({ name: req.body.name });
+  if (cityExists) {
     return res.status(403).json({
       error: "City exist",
     });
