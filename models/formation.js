@@ -10,7 +10,11 @@ const formationSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  price: {
+  priceMounth: {
+    type: Number,
+    require: true,
+  },
+  priceFormation: {
     type: Number,
     require: true,
   },
