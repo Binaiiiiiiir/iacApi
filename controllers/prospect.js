@@ -1,6 +1,8 @@
 const Prospect = require("../models/prospect");
-const formidable = require("formidable");
+// const formidable = require("formidable");
 const _ = require("lodash");
+const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Types.ObjectId();
 
 // exports.getProspectById = (req, res, id, next) => {
 //   Prospect.findById(id).exec((err, data) => {
@@ -67,6 +69,14 @@ exports.getStudents = (req, res) => {
   }
   if (filter.comment) {
     filter.comment = { $regex: ".*" + filter.comment + ".*" };
+  }
+  if (filter.cours) {
+    // ObjectId[] objarray = new ObjectId[filter.cours.length];
+    console.log(...filter.cours.map((c) => mongoose.Types.ObjectId(c)));
+
+    filter.cours = {
+      $all: [...filter.cours.map((c) => mongoose.Types.ObjectId(c))],
+    };
   }
   Prospect.countDocuments(function (err, c) {
     count = c;

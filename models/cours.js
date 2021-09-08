@@ -11,11 +11,6 @@ const coursSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
-  // id: {
-  //   type: String,
-  //   trim: true,
-  //   required: true,
-  // },
 });
 coursSchema.method("transform", function () {
   var obj = this.toObject();
