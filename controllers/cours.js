@@ -1,5 +1,6 @@
 const Cours = require("../models/cours");
 const _ = require("lodash");
+const mongoose = require("mongoose");
 
 exports.createCours = async (req, res) => {
   // const coursExists = await Cours.findOne({ id: req.body.id });
@@ -22,9 +23,17 @@ exports.getcourses = (req, res) => {
   range = JSON.parse(range);
   sort = JSON.parse(sort);
   filter = JSON.parse(filter);
+
   if (filter.name) {
     filter.name = { $regex: ".*" + filter.name + ".*" };
   }
+  if (filter.id) {
+    // filter.id = {
+    //   $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
+    // };
+    delete filter.id;
+  }
+
   Cours.countDocuments(function (err, c) {
     count = c;
   });
