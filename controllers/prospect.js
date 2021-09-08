@@ -3,17 +3,6 @@ const Prospect = require("../models/prospect");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 
-// exports.getProspectById = (req, res, id, next) => {
-//   Prospect.findById(id).exec((err, data) => {
-//     if (err) {
-//       return res.status(400).json({ error: "Prospect not found" });
-//     }
-//     req.prospect = data;
-//     res.json(data.transform());
-//     next();
-//   });
-// };
-
 exports.getProspectById = (req, res, next, id) => {
   Prospect.findById(id)
     .populate("city", "name")
@@ -34,7 +23,7 @@ exports.getProspectById = (req, res, next, id) => {
     });
 };
 
-exports.createStudents = async (req, res) => {
+exports.createProspect = async (req, res) => {
   const studentsExists = await Prospect.findOne({
     phoneNumber: req.body.phoneNumber,
   });
@@ -50,7 +39,7 @@ exports.createStudents = async (req, res) => {
   res.status(200).json({ message: "operation succeded", status: 200 });
 };
 
-exports.getStudents = (req, res) => {
+exports.getProspecs = (req, res) => {
   let range = req.query.range || "[0,9]";
   let sort = req.query.sort || '["RegisteredAt" , "DESC"]';
   let filter = req.query.filter || "{}";

@@ -23,7 +23,6 @@ const prospectSchema = new mongoose.Schema({
   city: {
     type: ObjectId,
     ref: City,
-    trim: true,
     require: true,
   },
   phoneNumber: {

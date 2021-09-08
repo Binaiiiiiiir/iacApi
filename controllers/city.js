@@ -28,13 +28,18 @@ exports.cityById = (req, res, next, id) => {
 };
 
 exports.getCities = (req, res) => {
+  let range = req.query.range || "[0,9]";
+  let count;
+  City.countDocuments(function (err, c) {
+    count = c;
+  });
   City.find()
     .then((data) => {
       let formatData = [];
       for (let i = 0; i < data.length; i++) {
         formatData.push(data[i].transform());
       }
-      res.set("Content-Range", `0-2/${data.length}`);
+      res.set("Content-Range", `cours ${range[0]}-${range[1] + 1}/${count}`);
       res.status(200).json(formatData);
     })
     .catch((err) => {
@@ -60,9 +65,5 @@ exports.deleteCity = (req, res) => {
     if (err) {
       return res.status(400).json({ error: err });
     }
-
-    // res.json({
-    //   message: "city deleted successfully",
-    // });
   });
 };
