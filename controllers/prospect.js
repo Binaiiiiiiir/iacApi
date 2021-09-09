@@ -34,7 +34,7 @@ exports.createProspect = async (req, res) => {
       status: 400,
     });
   }
-  req.body.RegistredAt = new Date();
+  // req.body.RegistredAt = mongoose.Types.Date.now();
   const prospect = await new Prospect(req.body);
   await prospect.save();
   res.status(200).json({ message: "operation succeded", status: 200 });

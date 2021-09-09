@@ -43,6 +43,18 @@ const prospectSchema = new mongoose.Schema({
   },
 });
 
+prospectSchema.pre("save", function (next) {
+  // get the current date
+  var currentDate = new Date();
+
+  // if created_at doesn't exist, add to that field
+  if (!this.RegisteredAt) {
+    console.log("In Pre save");
+    this.RegisteredAt = currentDate;
+  }
+
+  next();
+});
 prospectSchema.method("transform", function () {
   var obj = this.toObject();
 
