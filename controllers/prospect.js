@@ -2,7 +2,7 @@ const Prospect = require("../models/prospect");
 // const formidable = require("formidable");
 const _ = require("lodash");
 const mongoose = require("mongoose");
-const { addStudent } = require("./student");
+const { addStudent, deleteStudentByProspect } = require("./student");
 
 exports.getProspectById = (req, res, next, id) => {
   Prospect.findById(id)
@@ -45,8 +45,6 @@ exports.getProspecs = (req, res) => {
   let sort = req.query.sort || '["RegisteredAt" , "DESC"]';
   let filter = req.query.filter || "{}";
   let count;
-  // let page = 5;
-  // let prePage = 0;
   range = JSON.parse(range);
   sort = JSON.parse(sort);
   filter = JSON.parse(filter);
@@ -118,6 +116,8 @@ exports.updateProspect = (req, res) => {
   console.log(newProspect);
   if (newProspect.statu) {
     addStudent(req.prospect._id);
+  } else {
+    deleteStudentByProspect(req.prospect._id);
   }
   console.log(newProspect);
   console.log(req.prospect);

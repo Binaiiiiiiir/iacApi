@@ -1,5 +1,6 @@
 const Student = require("../models/student");
 const _ = require("lodash");
+const student = require("../models/student");
 
 exports.createStudent = async (req, res) => {
   const studentExists = await Student.findOne({
@@ -15,13 +16,6 @@ exports.createStudent = async (req, res) => {
   res.status(200).json({ message: req.body });
 };
 
-exports.addStudent = async (student) => {
-  let obj = { student };
-
-  const studentAdd = await new Student(obj);
-  await studentAdd.save();
-};
-
 exports.getStudents = (req, res) => {
   let range = req.query.range || "[0,9]";
   let count;
@@ -30,7 +24,7 @@ exports.getStudents = (req, res) => {
     count = c;
   });
   Student.find()
-    .populate("student", "id name   ")
+    .populate("student", "id name city cours phoneNumber")
     .then((data) => {
       let formatData = [];
       for (let i = 0; i < data.length; i++) {
@@ -83,5 +77,29 @@ exports.deleteStudent = (req, res) => {
     // res.json({
     //   message: "student deleted successfully",
     // });
+  });
+};
+
+exports.addStudent = async (student) => {
+  let obj = { student };
+
+  const studentAdd = await new Student(obj);
+  await studentAdd.save();
+};
+
+exports.deleteStudentByProspect = (id) => {
+  Student.findOne({ student: id }).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Prospect not found" });
+    }
+
+    data.remove((err, student) => {
+      if (err) {
+        return res.status(400).json({ error: err });
+      }
+      // res.json({
+      //   message: "student deleted successfully",
+      // });
+    });
   });
 };
