@@ -107,7 +107,7 @@ exports.updateProspect = (req, res) => {
   if (newProspect.city) newProspect.city = newProspect.city.id;
   console.log(newProspect);
   if (newProspect.statu) {
-    addStudent(req.prospect._id.to);
+    addStudent(req.prospect._id);
   }
   console.log(newProspect);
   console.log(req.prospect);
