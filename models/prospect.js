@@ -36,7 +36,6 @@ const prospectSchema = new mongoose.Schema({
   },
   RegisteredAt: {
     type: Date,
-    default: Date.now(),
   },
   comment: {
     type: String,

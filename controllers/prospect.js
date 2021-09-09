@@ -34,7 +34,7 @@ exports.createProspect = async (req, res) => {
       status: 400,
     });
   }
-
+  req.body.RegistredAt = new Date();
   const prospect = await new Prospect(req.body);
   await prospect.save();
   res.status(200).json({ message: "operation succeded", status: 200 });
@@ -50,6 +50,7 @@ exports.getProspecs = (req, res) => {
   range = JSON.parse(range);
   sort = JSON.parse(sort);
   filter = JSON.parse(filter);
+  filter.statu = false;
   if (filter.name) {
     filter.name = { $regex: ".*" + filter.name + ".*" };
   }
@@ -106,7 +107,7 @@ exports.updateProspect = (req, res) => {
   if (newProspect.city) newProspect.city = newProspect.city.id;
   console.log(newProspect);
   if (newProspect.statu) {
-    addStudent(req.prospect._id);
+    addStudent(req.prospect._id.to);
   }
   console.log(newProspect);
   console.log(req.prospect);
