@@ -8,12 +8,12 @@ const studentSchema = new mongoose.Schema({
     ref: Prospect,
     require: true,
   },
-  perentNumber: {
+  parentNumber: {
     type: String,
     trim: true,
   },
 
-  paiment: [
+  payment: [
     {
       type: {
         type: String,

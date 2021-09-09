@@ -2,6 +2,7 @@ const Prospect = require("../models/prospect");
 // const formidable = require("formidable");
 const _ = require("lodash");
 const mongoose = require("mongoose");
+const { addStudent } = require("./student");
 
 exports.getProspectById = (req, res, next, id) => {
   Prospect.findById(id)
@@ -101,8 +102,14 @@ exports.getProspecs = (req, res) => {
 exports.updateProspect = (req, res) => {
   let prospect = req.prospect;
   let newProspect = req.body;
-  newProspect.city = newProspect.city.id;
+
+  if (newProspect.city) newProspect.city = newProspect.city.id;
   console.log(newProspect);
+  if (newProspect.statu) {
+    addStudent(req.prospect._id);
+  }
+  console.log(newProspect);
+  console.log(req.prospect);
   prospect = _.extend(prospect, newProspect);
   prospect.save((err, prospect) => {
     if (err) {

@@ -15,6 +15,13 @@ exports.createStudent = async (req, res) => {
   res.status(200).json({ message: req.body });
 };
 
+exports.addStudent = async (student) => {
+  let obj = { student };
+
+  const studentAdd = await new Student(obj);
+  await studentAdd.save();
+};
+
 exports.getStudents = (req, res) => {
   let range = req.query.range || "[0,9]";
   let count;
@@ -23,7 +30,7 @@ exports.getStudents = (req, res) => {
     count = c;
   });
   Student.find()
-    .populate("student", "id")
+    .populate("student", "id name   ")
     .then((data) => {
       let formatData = [];
       for (let i = 0; i < data.length; i++) {
