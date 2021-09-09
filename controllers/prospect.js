@@ -71,12 +71,22 @@ exports.getProspecs = (req, res) => {
     };
   }
   if (filter.cours) {
-    console.log(...filter.cours.map((c) => mongoose.Types.ObjectId(c)));
+    // console.log(...filter.cours.map((c) => mongoose.Types.ObjectId(c)));
 
     filter.cours = {
       $all: [...filter.cours.map((c) => mongoose.Types.ObjectId(c))],
     };
   }
+  if (filter.id) {
+    // console.log(...filter.cours.map((c) => mongoose.Types.ObjectId(c)));
+
+    // console.log(...filter._id.map((c) => mongoose.Types.ObjectId(c)));
+    filter._id = {
+      $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
+    };
+    delete filter.id;
+  }
+
   Prospect.countDocuments(function (err, c) {
     count = c;
   });
