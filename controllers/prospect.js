@@ -50,7 +50,7 @@ exports.getProspecs = (req, res) => {
   range = JSON.parse(range);
   sort = JSON.parse(sort);
   filter = JSON.parse(filter);
-  filter.statu = false;
+  // filter.statu = false;
   if (filter.name) {
     filter.name = { $regex: ".*" + filter.name + ".*" };
   }
