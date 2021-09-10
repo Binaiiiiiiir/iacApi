@@ -25,8 +25,36 @@ exports.getStudents = (req, res) => {
   sort = JSON.parse(sort);
   filter = JSON.parse(filter);
   if (filter.name) {
-    filter.name = { student: { name: { $regex: ".*" + filter.name + ".*" } } };
+    filter.name = { $regex: ".*" + filter.name + ".*" };
   }
+  if (filter.email) {
+    filter.email = { $regex: ".*" + filter.email + ".*" };
+  }
+  if (filter.comment) {
+    filter.comment = { $regex: ".*" + filter.comment + ".*" };
+  }
+  if (filter.RegisteredAt) {
+    let dateStr = new Date(filter.RegisteredAt);
+    let nextDate = new Date(filter.RegisteredAt);
+    nextDate.setDate(nextDate.getDate() + 1);
+    console.log(dateStr, nextDate);
+    filter.RegisteredAt = {
+      $gte: new Date(dateStr),
+      $lte: new Date(nextDate),
+    };
+  }
+  if (filter.cours) {
+    filter.cours = {
+      $all: [...filter.cours.map((c) => mongoose.Types.ObjectId(c))],
+    };
+  }
+  if (filter.id) {
+    filter._id = {
+      $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
+    };
+    delete filter.id;
+  }
+
   console.log(filter);
   Student.countDocuments(function (err, c) {
     count = c;
@@ -67,7 +95,6 @@ exports.studentByIdBy = (req, res, next, id) => {
 
 exports.updateStudent = (req, res) => {
   let student = req.student;
-  console.log(student);
   student = _.extend(student, req.body);
   student.save((err, student) => {
     if (err) {
@@ -105,7 +132,6 @@ exports.deleteStudent = (req, res) => {
 };
 
 exports.addStudent = async (student) => {
-  console.log("addStd", student);
   const studentAdd = await new Student(student);
 
   await studentAdd.save();

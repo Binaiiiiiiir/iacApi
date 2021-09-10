@@ -70,16 +70,11 @@ exports.getProspecs = (req, res) => {
     };
   }
   if (filter.cours) {
-    // console.log(...filter.cours.map((c) => mongoose.Types.ObjectId(c)));
-
     filter.cours = {
       $all: [...filter.cours.map((c) => mongoose.Types.ObjectId(c))],
     };
   }
   if (filter.id) {
-    // console.log(...filter.cours.map((c) => mongoose.Types.ObjectId(c)));
-
-    // console.log(...filter._id.map((c) => mongoose.Types.ObjectId(c)));
     filter._id = {
       $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
     };
@@ -150,21 +145,6 @@ exports.deleteProspect = (req, res) => {
 
     res.json({
       message: "prospect deleted successfully",
-    });
-  });
-};
-
-exports.updateStatuPros = (id) => {
-  Prospect.findOne(id).exec((err, data) => {
-    if (err) {
-      return res.status(400).json({ error: "Prospect not found" });
-    }
-    prospect = _.extend(data, { statu: false });
-    prospect.save((err, prospect) => {
-      if (err) {
-        return res.status(403).json({ error: err });
-      }
-      // res.json(prospect);
     });
   });
 };
