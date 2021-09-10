@@ -18,13 +18,26 @@ exports.createStudent = async (req, res) => {
 
 exports.getStudents = (req, res) => {
   let range = req.query.range || "[0,9]";
+  let sort = req.query.sort || "[]";
+  let filter = req.query.filter || "{}";
   let count;
   range = JSON.parse(range);
+  sort = JSON.parse(sort);
+  filter = JSON.parse(filter);
+  if (filter.name) {
+    filter.name = { student: { name: { $regex: ".*" + filter.name + ".*" } } };
+  }
+  console.log(filter);
   Student.countDocuments(function (err, c) {
     count = c;
   });
-  Student.find()
-    .populate("student", "id name city cours phoneNumber")
+  let map = new Map([sort]);
+  // console.log(map);
+  Student.find(filter)
+    // .sort(Object.fromEntries(map))
+    .skip(range[0])
+    .limit(range[1] + 1 - range[0])
+    .populate("student", "id   city cours phoneNumber email")
     .then((data) => {
       let formatData = [];
       for (let i = 0; i < data.length; i++) {
@@ -81,9 +94,9 @@ exports.deleteStudent = (req, res) => {
 };
 
 exports.addStudent = async (student) => {
-  let obj = { student };
+  console.log("addStd", student);
+  const studentAdd = await new Student(student);
 
-  const studentAdd = await new Student(obj);
   await studentAdd.save();
 };
 

@@ -1,38 +1,72 @@
 const mongoose = require("mongoose");
+const City = require("./city");
+const Cours = require("./cours");
 const Prospect = require("./prospect");
 const { ObjectId } = mongoose.Schema;
 
 const studentSchema = new mongoose.Schema({
-  student: {
+  name: {
+    type: String,
+    trim: true,
+    required: true,
+  },
+  email: {
+    type: String,
+    trim: true,
+    required: true,
+  },
+  cours: [
+    {
+      type: ObjectId,
+      require: true,
+      ref: Cours,
+    },
+  ],
+  city: {
     type: ObjectId,
-    ref: Prospect,
+    ref: City,
     require: true,
+  },
+  phoneNumber: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  RegisteredAt: {
+    type: Date,
+  },
+  comment: {
+    type: String,
+    default: "nothing yet",
   },
   parentNumber: {
     type: String,
     trim: true,
   },
-
-  payment: [
-    {
-      type: {
-        type: String,
-        // required: true,
-      },
-      Date: {
-        type: Date,
-        // default: Date.now(),
-      },
-      amount: {
-        type: Number,
-        // required: true,
-      },
-      numofmonth: {
-        type: Number,
-        required: true,
-      },
-    },
-  ],
+  refProspect: {
+    type: ObjectId,
+    ref: Prospect,
+  },
+  // payment: [
+  //   {
+  //     type: {
+  //       type: String,
+  //       // required: true,
+  //     },
+  //     Date: {
+  //       type: Date,
+  //       // default: Date.now(),
+  //     },
+  //     amount: {
+  //       type: Number,
+  //       // required: true,
+  //     },
+  //     numofmonth: {
+  //       type: Number,
+  //       required: true,
+  //     },
+  //   },
+  // ],
 });
 
 studentSchema.method("transform", function () {

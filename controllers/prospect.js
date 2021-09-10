@@ -113,15 +113,25 @@ exports.updateProspect = (req, res) => {
   let newProspect = req.body;
 
   if (newProspect.city) newProspect.city = newProspect.city.id;
-  console.log(newProspect);
-  if (newProspect.statu) {
-    addStudent(req.prospect._id);
-  } else {
-    deleteStudentByProspect(req.prospect._id);
-  }
-  console.log(newProspect);
-  console.log(req.prospect);
+
   prospect = _.extend(prospect, newProspect);
+  if (newProspect.statu) {
+    let newStudent = {
+      name: prospect.name,
+      cours: prospect.cours,
+      comment: prospect.comment,
+      city: prospect.city._id,
+      email: prospect.email,
+      phoneNumber: prospect.phoneNumber,
+      refProspect: prospect._id,
+      RegisteredAt: prospect.RegisteredAt,
+    };
+    newStudent.refProspect = prospect._id;
+    delete newStudent.__v;
+    console.log(newStudent);
+    addStudent(newStudent);
+  }
+
   prospect.save((err, prospect) => {
     if (err) {
       return res.status(403).json({ error: err });
