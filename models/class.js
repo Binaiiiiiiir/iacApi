@@ -68,6 +68,16 @@ classSchema.pre("save", function (next) {
     }
   });
 
+  Class.count(
+    { "class.formation": this.formation, "class.cours": this.cours },
+    (err, dos) => {
+      if (err) {
+        console.log(err);
+      }
+      console.log(dos);
+    }
+  );
+
   // mongoose
   //   .model("Class")
   //   .countDocuments({
