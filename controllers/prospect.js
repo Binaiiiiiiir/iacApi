@@ -3,7 +3,6 @@ const Prospect = require("../models/prospect");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 const { addStudent, deleteStudentByProspect } = require("./student");
-const prospect = require("../models/prospect");
 
 exports.getProspectById = (req, res, next, id) => {
   Prospect.findById(id)

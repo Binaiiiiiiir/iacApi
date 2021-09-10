@@ -23,36 +23,59 @@ const classSchema = new mongoose.Schema({
     type: ObjectId,
     ref: Formation,
   },
+  studentsNumber: {
+    type: Number,
+  },
   students: [
     {
       type: ObjectId,
       ref: Student,
     },
   ],
+  creationYear: {
+    type: Number,
+  },
 });
 
-prospectSchema.pre("save", function (next) {
-  // get the current date
-  let coureName, formationLabel;
+classSchema.pre("save", function (next) {
+  //give creationyear
+  if (!this.creationYear) {
+    this.creationYear = new Date().getFullYear();
+  }
+  //count Students
+  this.studentsNumber = this.students.length;
+
+  // generate Name
+  var coureName, formationLabel;
   Cours.findOne(this.cours).exec((err, data) => {
     if (err) {
       return res.status(400).json({ error: "Cours not found" });
     }
-    coureName = data.name;
+    var { name } = data;
+    coureName = name;
+    console.log(coureName);
   });
-  Fromation.findOne(this.formation).exec((err, data) => {
+  Formation.findOne(this.formation).exec((err, data) => {
     if (err) {
       return res.status(400).json({ error: "Formation not found" });
     }
-    formationLabel = data.label;
+    var { label } = data;
+    formationLabel = label;
+    console.log(formationLabel);
+    if (!this.name) {
+      console.log("In Pre save");
+      this.name = `${coureName}-${formationLabel} ${this.creationYear}`;
+    }
   });
-  let name = `${coureName}-${formationLabel} ${new Date().getFullYear()}`;
+
+  // mongoose
+  //   .model("Class")
+  //   .countDocuments({
+  //     formation: this.formation,
+  //     creationYear: this.creationYear,
+  //   });
 
   // if created_at doesn't exist, add to that field
-  if (!this.name) {
-    console.log("In Pre save");
-    this.name = name;
-  }
 
   next();
 });
@@ -69,4 +92,4 @@ classSchema.method("transform", function () {
   return obj;
 });
 
-module.exports = mongoose.model("Prospect", prospectSchema);
+module.exports = mongoose.model("Class", classSchema);

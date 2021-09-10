@@ -57,7 +57,7 @@ exports.getTeacher = (req, res) => {
       for (let i = 0; i < data.length; i++) {
         formatData.push(data[i].transform());
       }
-      res.set("Content-Range", `cours ${range[0]}-${range[1] + 1}/${count}`);
+      res.set("Content-Range", `teacher ${range[0]}-${range[1] + 1}/${count}`);
       res.status(200).json(formatData);
     })
     .catch((err) => {
