@@ -1,6 +1,7 @@
 const Student = require("../models/student");
 const _ = require("lodash");
 const Prospect = require("../models/prospect");
+const mongoose = require("mongoose");
 
 exports.createStudent = async (req, res) => {
   const studentExists = await Student.findOne({
