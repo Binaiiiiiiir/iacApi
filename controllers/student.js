@@ -1,6 +1,6 @@
 const Student = require("../models/student");
 const _ = require("lodash");
-const student = require("../models/student");
+const Prospect = require("../models/prospect");
 
 exports.createStudent = async (req, res) => {
   const studentExists = await Student.findOne({
@@ -37,7 +37,6 @@ exports.getStudents = (req, res) => {
     // .sort(Object.fromEntries(map))
     .skip(range[0])
     .limit(range[1] + 1 - range[0])
-    .populate("student", "id   city cours phoneNumber email")
     .then((data) => {
       let formatData = [];
       for (let i = 0; i < data.length; i++) {
@@ -52,20 +51,18 @@ exports.getStudents = (req, res) => {
 };
 
 exports.studentByIdBy = (req, res, next, id) => {
-  Student.findById(id)
-    .populate("student", "name cours")
-    .exec((err, data) => {
-      if (err) {
-        return res.status(400).json({ error: "Prospect not found" });
-      }
-      req.student = data;
-      // for (let i = 0; i < data.cours.length; i++) {
-      //   data.cours[i] = data.cours[i].transform();
-      // }
-      res.set("Content-Range", `0-1/${data.length}`);
-      res.json(data.transform());
-      next();
-    });
+  Student.findById(id).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Prospect not found" });
+    }
+    req.student = data;
+    // for (let i = 0; i < data.cours.length; i++) {
+    //   data.cours[i] = data.cours[i].transform();
+    // }
+    res.set("Content-Range", `0-1/${data.length}`);
+    res.json(data.transform());
+    next();
+  });
 };
 
 exports.updateStudent = (req, res) => {
@@ -79,10 +76,24 @@ exports.updateStudent = (req, res) => {
     // return res.status(200).json(student);
   });
 };
+const updateStatuPros = (id) => {
+  Prospect.findOne(id).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Prospect not found" });
+    }
+    prospect = _.extend(data, { statu: false });
+    prospect.save((err, prospect) => {
+      if (err) {
+        return res.status(403).json({ error: err });
+      }
+      // res.json(prospect);
+    });
+  });
+};
 
 exports.deleteStudent = (req, res) => {
   let student = req.student;
-
+  updateStatuPros(student.refProspect);
   student.remove((err, student) => {
     if (err) {
       return res.status(400).json({ error: err });
@@ -101,9 +112,9 @@ exports.addStudent = async (student) => {
 };
 
 exports.deleteStudentByProspect = (id) => {
-  Student.findOne({ student: id }).exec((err, data) => {
+  Student.findOne({ refProspect: id }).exec((err, data) => {
     if (err) {
-      return res.status(400).json({ error: "Prospect not found" });
+      return res.status(400).json({ error: "Student not found" });
     }
 
     data.remove((err, student) => {

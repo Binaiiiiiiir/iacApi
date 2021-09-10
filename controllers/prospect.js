@@ -3,6 +3,7 @@ const Prospect = require("../models/prospect");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 const { addStudent, deleteStudentByProspect } = require("./student");
+const prospect = require("../models/prospect");
 
 exports.getProspectById = (req, res, next, id) => {
   Prospect.findById(id)
@@ -126,10 +127,9 @@ exports.updateProspect = (req, res) => {
       refProspect: prospect._id,
       RegisteredAt: prospect.RegisteredAt,
     };
-    newStudent.refProspect = prospect._id;
-    delete newStudent.__v;
-    console.log(newStudent);
     addStudent(newStudent);
+  } else {
+    deleteStudentByProspect(req.prospect._id);
   }
 
   prospect.save((err, prospect) => {
@@ -150,6 +150,21 @@ exports.deleteProspect = (req, res) => {
 
     res.json({
       message: "prospect deleted successfully",
+    });
+  });
+};
+
+exports.updateStatuPros = (id) => {
+  Prospect.findOne(id).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Prospect not found" });
+    }
+    prospect = _.extend(data, { statu: false });
+    prospect.save((err, prospect) => {
+      if (err) {
+        return res.status(403).json({ error: err });
+      }
+      // res.json(prospect);
     });
   });
 };
