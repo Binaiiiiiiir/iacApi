@@ -63,7 +63,7 @@ exports.getStudents = (req, res) => {
   let map = new Map([sort]);
   // console.log(map);
   Student.find(filter)
-    // .sort(Object.fromEntries(map))
+    .sort(Object.fromEntries(map))
     .skip(range[0])
     .limit(range[1] + 1 - range[0])
     .then((data) => {
