@@ -33,11 +33,11 @@ exports.classById = (req, res, next, id) => {
 };
 
 exports.getClasses = (req, res) => {
-  // let range = req.query.range || "[0,9]";
+  let range = req.query.range || "[0,9]";
   // let sort = req.query.sort || '["name" , "ASC"]';
   // let filter = req.query.filter || "{}";
-  // let count;
-  // range = JSON.parse(range);
+  let count;
+  range = JSON.parse(range);
   // sort = JSON.parse(sort);
   // filter = JSON.parse(filter);
   // if (filter.email) {
@@ -49,9 +49,9 @@ exports.getClasses = (req, res) => {
   // if (filter.cin) {
   //   filter.cin = { $regex: ".*" + filter.cin + ".*" };
   // }
-  // Class.countDocuments(function (err, c) {
-  //   count = c;
-  // });
+  Class.countDocuments(function (err, c) {
+    count = c;
+  });
   // let map = new Map([sort]);
   Class.find()
     // .sort(Object.fromEntries(map))
@@ -62,7 +62,7 @@ exports.getClasses = (req, res) => {
       for (let i = 0; i < data.length; i++) {
         formatData.push(data[i].transform());
       }
-      // res.set("Content-Range", `class ${range[0]}-${range[1] + 1}/${count}`);
+      res.set("Content-Range", `class ${range[0]}-${range[1] + 1}/${count}`);
       res.status(200).json(formatData);
     })
     .catch((err) => {
