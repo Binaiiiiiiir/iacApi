@@ -44,6 +44,12 @@ exports.getTeacher = (req, res) => {
   if (filter.cin) {
     filter.cin = { $regex: ".*" + filter.cin + ".*" };
   }
+  if (filter.id) {
+    filter._id = {
+      $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
+    };
+    delete filter.id;
+  }
   Teacher.countDocuments(function (err, c) {
     count = c;
   });

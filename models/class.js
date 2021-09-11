@@ -47,7 +47,9 @@ classSchema.pre("save", function (next) {
   if (this.isNew) {
     this.creationYear = new Date().getFullYear();
 
-    var coureName, formationLabel, count;
+    var coureName,
+      formationLabel,
+      classCount = 101;
     Cours.findOne(this.cours).exec((err, data) => {
       if (err) {
         return res.status(400).json({ error: "Cours not found" });
@@ -62,22 +64,26 @@ classSchema.pre("save", function (next) {
         }
         var { label } = data;
         formationLabel = label;
+
+        const func = (x) => {
+          console.log(x);
+          this.classLabel = `${coureName}-${formationLabel}-${classCount + x}-${
+            this.creationYear
+          }`;
+          console.log("In Pre save", this);
+          next();
+        };
         mongoose.model("Class").countDocuments(
           {
             cours: this.cours,
             formation: this.formation,
             creationYear: this.creationYear,
           },
-          (err, count) => {
-            console.log(count);
-            this.classLabel = `${coureName}-${formationLabel}-${count + 101}-${
-              this.creationYear
-            }`;
+          async (err, count) => {
+            let x = await count;
+            func(x);
           }
         );
-
-        console.log("In Pre save", this);
-        next();
       });
     });
   } else {

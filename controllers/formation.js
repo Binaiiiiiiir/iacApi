@@ -41,6 +41,12 @@ exports.getFormations = (req, res) => {
   if (filter.description) {
     filter.description = { $regex: ".*" + filter.description + ".*" };
   }
+  if (filter.id) {
+    filter._id = {
+      $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
+    };
+    delete filter.id;
+  }
   Formation.countDocuments(function (err, c) {
     count = c;
   });

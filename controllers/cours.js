@@ -28,9 +28,9 @@ exports.getcourses = (req, res) => {
     filter.name = { $regex: ".*" + filter.name + ".*" };
   }
   if (filter.id) {
-    // filter.id = {
-    //   $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
-    // };
+    filter._id = {
+      $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
+    };
     delete filter.id;
   }
 
