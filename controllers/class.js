@@ -3,14 +3,16 @@ const _ = require("lodash");
 
 exports.createClass = async (req, res) => {
   const classExists = await Class.findOne({
-    name: req.body.name,
+    classLabel: req.body.classLabel,
   });
+
   if (classExists) {
     return res.status(403).json({
       message: "sorry something went worng try again later",
       status: 400,
     });
   }
+
   // req.body.RegistredAt = mongoose.Types.Date.now();
   const newClass = await new Class(req.body);
   await newClass.save();
@@ -51,7 +53,7 @@ exports.getClasses = (req, res) => {
   //   count = c;
   // });
   // let map = new Map([sort]);
-  Class.find(/*filter*/)
+  Class.find()
     // .sort(Object.fromEntries(map))
     // .skip(range[0])
     // .limit(range[1] + 1 - range[0])
@@ -70,12 +72,13 @@ exports.getClasses = (req, res) => {
 
 exports.updateClass = (req, res) => {
   let classUpdate = req.class;
+  console.log(classUpdate);
   classUpdate = _.extend(classUpdate, req.body);
-
+  console.log(req.body);
   classUpdate.save((err, classUpdate) => {
-    if (err) {
-      return res.status(403).json({ error: err });
-    }
+    // if (err) {
+    //   return res.status(403).json({ error: err });
+    // }
     // return res.status(200).json(city);
   });
 };

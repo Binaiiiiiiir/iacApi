@@ -6,7 +6,7 @@ const Teacher = require("./teacher");
 const { ObjectId } = mongoose.Schema;
 
 const classSchema = new mongoose.Schema({
-  name: {
+  classLabel: {
     type: String,
     trim: true,
     require: true,
@@ -39,55 +39,62 @@ const classSchema = new mongoose.Schema({
 
 classSchema.pre("save", function (next) {
   //give creationyear
-  if (!this.creationYear) {
-    this.creationYear = new Date().getFullYear();
-  }
+
   //count Students
   this.studentsNumber = this.students.length;
 
   // generate Name
-  var coureName, formationLabel;
-  Cours.findOne(this.cours).exec((err, data) => {
-    if (err) {
-      return res.status(400).json({ error: "Cours not found" });
-    }
-    var { name } = data;
-    coureName = name;
-    console.log(coureName);
-  });
-  Formation.findOne(this.formation).exec((err, data) => {
-    if (err) {
-      return res.status(400).json({ error: "Formation not found" });
-    }
-    var { label } = data;
-    formationLabel = label;
-    console.log(formationLabel);
-    if (!this.name) {
-      console.log("In Pre save");
-      this.name = `${coureName}-${formationLabel} ${this.creationYear}`;
-    }
-  });
+  if (this.isNew) {
+    this.creationYear = new Date().getFullYear();
 
-  Class.count(
-    { "class.formation": this.formation, "class.cours": this.cours },
-    (err, dos) => {
+    var coureName, formationLabel, count;
+    Cours.findOne(this.cours).exec((err, data) => {
       if (err) {
-        console.log(err);
+        return res.status(400).json({ error: "Cours not found" });
       }
-      console.log(dos);
-    }
-  );
+      var { name } = data;
+      coureName = name;
+      console.log(coureName);
 
-  // mongoose
-  //   .model("Class")
-  //   .countDocuments({
-  //     formation: this.formation,
-  //     creationYear: this.creationYear,
-  //   });
+      Formation.findOne(this.formation).exec((err, data) => {
+        if (err) {
+          return res.status(400).json({ error: "Formation not found" });
+        }
+        var { label } = data;
+        formationLabel = label;
+        mongoose.model("Class").countDocuments(
+          {
+            cours: this.cours,
+            formation: this.formation,
+            creationYear: this.creationYear,
+          },
+          (err, count) => {
+            console.log(count);
+            this.classLabel = `${coureName}-${formationLabel}-${count + 101}-${
+              this.creationYear
+            }`;
+          }
+        );
+
+        console.log("In Pre save", this);
+        next();
+      });
+    });
+  } else {
+    next();
+  }
+
+  // Class.count(
+  //   { "class.formation": this.formation, "class.cours": this.cours },
+  //   (err, dos) => {
+  //     if (err) {
+  //       console.log(err);
+  //     }
+  //     console.log(dos);
+  //   }
+  // );
 
   // if created_at doesn't exist, add to that field
-
-  next();
 });
 
 classSchema.method("transform", function () {
