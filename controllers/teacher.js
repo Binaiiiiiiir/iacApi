@@ -1,5 +1,6 @@
 const Teacher = require("../models/teacher");
 const _ = require("lodash");
+const mongoose = require("mongoose");
 
 exports.createTeacher = async (req, res) => {
   const coursExists = await Teacher.findOne({ cin: req.body.cin });

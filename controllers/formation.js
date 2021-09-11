@@ -1,5 +1,6 @@
 const _ = require("lodash");
 const Formation = require("../models/formation");
+const mongoose = require("mongoose");
 
 exports.createFormation = async (req, res) => {
   const formationExists = await Formation.findOne({ label: req.body.label });
