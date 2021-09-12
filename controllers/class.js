@@ -44,14 +44,6 @@ exports.getClasses = (req, res) => {
   if (filter.classLabel) {
     filter.classLabel = { $regex: ".*" + filter.classLabel + ".*" };
   }
-  // if (filter.teacher) {
-  //   filter.teacher = { $eq: filter.teacher };
-  // }
-  // if (filter.teacher) {
-  //   filter.teacher = { $eq: filter.teacher };
-  // }
-  // if (filter.formation) {
-  //   filter.formation = { $eq: filter.formation };
 
   Class.countDocuments(function (err, c) {
     count = c;

@@ -29,17 +29,22 @@ exports.cityById = (req, res, next, id) => {
 
 exports.getCities = (req, res) => {
   let range = req.query.range || "[0,9]";
+  let sort = req.query.sort || '["name" , "ASC"]';
   let count;
+  range = JSON.parse(range);
+  sort = JSON.parse(sort);
   City.countDocuments(function (err, c) {
     count = c;
   });
+  let map = new Map([sort]);
   City.find()
+    .sort(Object.fromEntries(map))
     .then((data) => {
       let formatData = [];
       for (let i = 0; i < data.length; i++) {
         formatData.push(data[i].transform());
       }
-      res.set("Content-Range", `cours ${range[0]}-${range[1] + 1}/${count}`);
+      res.set("Content-Range", `city ${range[0]}-${range[1] + 1}/${count}`);
       res.status(200).json(formatData);
     })
     .catch((err) => {
