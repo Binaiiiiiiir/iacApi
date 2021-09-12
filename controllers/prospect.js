@@ -4,24 +4,35 @@ const _ = require("lodash");
 const mongoose = require("mongoose");
 const { addStudent, deleteStudentByProspect } = require("./student");
 
+exports.getProspectOne = (req, res, next, id) => {
+  Prospect.findById(id).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Prospect not found" });
+    }
+    // res.set("Content-Range", `0-1/${data.length}`);
+    // for (let i = 0; i < data.cours.length; i++) {
+    //   data.cours[i] = data.cours[i].transform();
+    // }
+    // res.json(data.transform());
+    req.prospect = data;
+
+    next();
+  });
+};
 exports.getProspectById = (req, res, next, id) => {
-  Prospect.findById(id)
-    .populate("city", "name")
+  Prospect.findById(id).exec((err, data) => {
+    if (err) {
+      return res.status(400).json({ error: "Prospect not found" });
+    }
+    res.set("Content-Range", `0-1/${data.length}`);
+    // for (let i = 0; i < data.cours.length; i++) {
+    //   data.cours[i] = data.cours[i].transform();
+    // }
+    res.json(data.transform());
+    req.prospect = data;
 
-    // .populate("cours", "  name")
-    .exec((err, data) => {
-      if (err) {
-        return res.status(400).json({ error: "Prospect not found" });
-      }
-
-      req.prospect = data;
-      // for (let i = 0; i < data.cours.length; i++) {
-      //   data.cours[i] = data.cours[i].transform();
-      // }
-      res.set("Content-Range", `0-1/${data.length}`);
-      res.json(data.transform());
-      next();
-    });
+    next();
+  });
 };
 
 exports.createProspect = async (req, res) => {
@@ -134,13 +145,23 @@ exports.updateProspect = (req, res) => {
 exports.deleteProspect = (req, res) => {
   let prospect = req.prospect;
 
-  prospect.remove((err, prospect) => {
-    if (err) {
-      return res.status(400).json({ error: err });
-    }
+  if (prospect) {
+    if (!prospect.statu) {
+      console.log("if");
+      prospect.remove((err, prospect) => {
+        if (err) {
+          return res.status(400).json({ error: err });
+        }
 
-    res.json({
-      message: "prospect deleted successfully",
-    });
-  });
+        res.json({
+          message: "prospect deleted successfully",
+        });
+      });
+    } else {
+      console.log("else");
+      res.status(400).json({ error: "unauthorized" });
+    }
+  } else {
+    res.status(400).json({ error: "prospect not found" });
+  }
 };

@@ -45,6 +45,11 @@ exports.getTeacher = (req, res) => {
   if (filter.cin) {
     filter.cin = { $regex: ".*" + filter.cin + ".*" };
   }
+  if (filter.cours) {
+    filter.cours = {
+      $all: [...filter.cours.map((c) => mongoose.Types.ObjectId(c))],
+    };
+  }
   if (filter.id) {
     filter._id = {
       $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
