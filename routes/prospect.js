@@ -12,8 +12,8 @@ const router = express.Router();
 router.post("/inscription", createProspect);
 router.get("/prospect", getProspecs);
 router.put("/prospect/:prosId", updateProspect);
-router.get("/prospect/:prosId", getProspectOne);
+router.get("/prospect/:prosId", getProspectById);
 router.delete("/prospect/:prosId", deleteProspect);
 
-router.param("prosId", getProspectOne);
+router.param("prosId", getProspectById);
 module.exports = router;

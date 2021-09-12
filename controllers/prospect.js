@@ -4,21 +4,21 @@ const _ = require("lodash");
 const mongoose = require("mongoose");
 const { addStudent, deleteStudentByProspect } = require("./student");
 
-exports.getProspectOne = (req, res, next, id) => {
-  Prospect.findById(id).exec((err, data) => {
-    if (err) {
-      return res.status(400).json({ error: "Prospect not found" });
-    }
-    // res.set("Content-Range", `0-1/${data.length}`);
-    // for (let i = 0; i < data.cours.length; i++) {
-    //   data.cours[i] = data.cours[i].transform();
-    // }
-    // res.json(data.transform());
-    req.prospect = data;
+// exports.getProspectOne = (req, res, next, id) => {
+//   Prospect.findById(id).exec((err, data) => {
+//     // if (err) {
+//     //   return res.status(400).json({ error: "Prospect not found" });
+//     // }
+//     // res.set("Content-Range", `0-1/${data.length}`);
+//     // for (let i = 0; i < data.cours.length; i++) {
+//     //   data.cours[i] = data.cours[i].transform();
+//     // }
+//     res.json(data.transform());
+//     req.prospect = data;
 
-    next();
-  });
-};
+//     next();
+//   });
+// };
 exports.getProspectById = (req, res, next, id) => {
   Prospect.findById(id).exec((err, data) => {
     if (err) {
@@ -158,10 +158,10 @@ exports.deleteProspect = (req, res) => {
         });
       });
     } else {
-      console.log("else");
-      res.status(400).json({ error: "unauthorized" });
+      // console.log("else");
+      // res.status(400).json({ error: "unauthorized" });
     }
   } else {
-    res.status(400).json({ error: "prospect not found" });
+    // res.status(400).json({ error: "prospect not found" });
   }
 };
