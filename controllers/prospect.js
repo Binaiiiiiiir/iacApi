@@ -88,7 +88,6 @@ exports.getProspecs = (req, res) => {
     .sort(Object.fromEntries(map))
     .skip(range[0])
     .limit(range[1] + 1 - range[0])
-    .populate("city", "name")
     .then((data) => {
       let formatData = [];
       console.log(data.length, range);
@@ -107,15 +106,13 @@ exports.updateProspect = (req, res) => {
   let prospect = req.prospect;
   let newProspect = req.body;
 
-  if (newProspect.city) newProspect.city = newProspect.city.id;
-
   prospect = _.extend(prospect, newProspect);
   if (newProspect.statu) {
     let newStudent = {
       name: prospect.name,
       cours: prospect.cours,
       comment: prospect.comment,
-      city: prospect.city._id,
+      city: prospect.city,
       email: prospect.email,
       phoneNumber: prospect.phoneNumber,
       refProspect: prospect._id,

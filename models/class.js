@@ -56,7 +56,7 @@ classSchema.pre("save", function (next) {
       }
       var { name } = data;
       coureName = name;
-      console.log(coureName);
+      // console.log(coureName);
 
       Formation.findOne(this.formation).exec((err, data) => {
         if (err) {
@@ -70,7 +70,7 @@ classSchema.pre("save", function (next) {
           this.classLabel = `${coureName}-${formationLabel}-${classCount + x}-${
             this.creationYear
           }`;
-          console.log("In Pre save", this);
+          // console.log("In Pre save", this);
           next();
         };
         mongoose.model("Class").countDocuments(

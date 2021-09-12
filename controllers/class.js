@@ -34,29 +34,33 @@ exports.classById = (req, res, next, id) => {
 
 exports.getClasses = (req, res) => {
   let range = req.query.range || "[0,9]";
-  // let sort = req.query.sort || '["name" , "ASC"]';
-  // let filter = req.query.filter || "{}";
+  let sort = req.query.sort || '["name" , "ASC"]';
+  let filter = req.query.filter || "{}";
   let count;
   range = JSON.parse(range);
-  // sort = JSON.parse(sort);
-  // filter = JSON.parse(filter);
-  // if (filter.email) {
-  //   filter.email = { $regex: ".*" + filter.email + ".*" };
+  sort = JSON.parse(sort);
+  filter = JSON.parse(filter);
+
+  if (filter.classLabel) {
+    filter.classLabel = { $regex: ".*" + filter.classLabel + ".*" };
+  }
+  // if (filter.teacher) {
+  //   filter.teacher = { $eq: filter.teacher };
   // }
-  // if (filter.name) {
-  //   filter.name = { $regex: ".*" + filter.name + ".*" };
+  // if (filter.teacher) {
+  //   filter.teacher = { $eq: filter.teacher };
   // }
-  // if (filter.cin) {
-  //   filter.cin = { $regex: ".*" + filter.cin + ".*" };
-  // }
+  // if (filter.formation) {
+  //   filter.formation = { $eq: filter.formation };
+
   Class.countDocuments(function (err, c) {
     count = c;
   });
-  // let map = new Map([sort]);
-  Class.find()
-    // .sort(Object.fromEntries(map))
-    // .skip(range[0])
-    // .limit(range[1] + 1 - range[0])
+  let map = new Map([sort]);
+  Class.find(filter)
+    .sort(Object.fromEntries(map))
+    .skip(range[0])
+    .limit(range[1] + 1 - range[0])
     .then((data) => {
       let formatData = [];
       for (let i = 0; i < data.length; i++) {
