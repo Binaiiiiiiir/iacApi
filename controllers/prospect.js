@@ -23,7 +23,7 @@ exports.getProspectById = (req, res) => {
   prospect = req.prospect;
   if (prospect) {
     res.set("Content-Range", `prospect 0-1/1`);
-    res.json(prospect);
+    res.json(prospect.transform());
   } else res.status(400).json({ error: "Prospect not found" });
 };
 
