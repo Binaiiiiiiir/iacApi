@@ -15,5 +15,5 @@ router.put("/prospect/:prosId", updateProspect);
 router.get("/prospect/:prosId", getProspectById);
 router.delete("/prospect/:prosId", deleteProspect);
 
-router.param("prosId", getProspectById);
+router.param("prosId", getProspectOne);
 module.exports = router;

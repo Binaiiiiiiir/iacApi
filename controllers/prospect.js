@@ -4,35 +4,27 @@ const _ = require("lodash");
 const mongoose = require("mongoose");
 const { addStudent, deleteStudentByProspect } = require("./student");
 
-// exports.getProspectOne = (req, res, next, id) => {
-//   Prospect.findById(id).exec((err, data) => {
-//     // if (err) {
-//     //   return res.status(400).json({ error: "Prospect not found" });
-//     // }
-//     // res.set("Content-Range", `0-1/${data.length}`);
-//     // for (let i = 0; i < data.cours.length; i++) {
-//     //   data.cours[i] = data.cours[i].transform();
-//     // }
-//     res.json(data.transform());
-//     req.prospect = data;
-
-//     next();
-//   });
-// };
-exports.getProspectById = (req, res, next, id) => {
+exports.getProspectOne = (req, res, next, id) => {
   Prospect.findById(id).exec((err, data) => {
-    if (err) {
-      return res.status(400).json({ error: "Prospect not found" });
-    }
-    res.set("Content-Range", `0-1/${data.length}`);
+    // if (err) {
+    //   return res.status(400).json({ error: "Prospect not found" });
+    // }
+    // res.set("Content-Range", `0-1/${data.length}`);
     // for (let i = 0; i < data.cours.length; i++) {
     //   data.cours[i] = data.cours[i].transform();
     // }
-    res.json(data.transform());
+    // res.json(data.transform());
     req.prospect = data;
 
     next();
   });
+};
+exports.getProspectById = (req, res) => {
+  prospect = req.prospect;
+  if (prospect) {
+    res.set("Content-Range", `prospect 0-1/1`);
+    res.json(prospect);
+  } else res.status(400).json({ error: "Prospect not found" });
 };
 
 exports.createProspect = async (req, res) => {
@@ -158,10 +150,10 @@ exports.deleteProspect = (req, res) => {
         });
       });
     } else {
-      // console.log("else");
-      // res.status(400).json({ error: "unauthorized" });
+      console.log("else");
+      res.status(400).json({ error: "unauthorized" });
     }
   } else {
-    // res.status(400).json({ error: "prospect not found" });
+    res.status(400).json({ error: "prospect not found" });
   }
 };
