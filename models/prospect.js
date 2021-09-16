@@ -31,8 +31,8 @@ const prospectSchema = new mongoose.Schema({
     trim: true,
   },
   statu: {
-    type: Boolean,
-    default: false,
+    trye: String,
+    default: "Pas traitée",
   },
   RegisteredAt: {
     type: Date,
