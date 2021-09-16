@@ -24,7 +24,7 @@ exports.getProspectById = (req, res) => {
   if (prospect) {
     res.set("Content-Range", `prospect 0-1/1`);
     res.json(prospect.transform());
-  } else res.status(400).json({ error: "Prospect not found" });
+  } else res.status(400).json({ message: "Prospect not found" });
 };
 
 exports.createProspect = async (req, res) => {
@@ -110,7 +110,7 @@ exports.updateProspect = (req, res) => {
   let newProspect = req.body;
 
   prospect = _.extend(prospect, newProspect);
-  if (newProspect.statu) {
+  if (newProspect.statu === "Student") {
     let newStudent = {
       name: prospect.name,
       cours: prospect.cours,
@@ -128,7 +128,7 @@ exports.updateProspect = (req, res) => {
 
   prospect.save((err, prospect) => {
     if (err) {
-      return res.status(403).json({ error: err });
+      return res.status(403).json({ message: err });
     }
     // res.json(prospect);
   });
@@ -139,10 +139,9 @@ exports.deleteProspect = (req, res) => {
 
   if (prospect) {
     if (!prospect.statu) {
-      console.log("if");
       prospect.remove((err, prospect) => {
         if (err) {
-          return res.status(400).json({ error: err });
+          return res.status(400).json({ message: err });
         }
 
         res.json({
@@ -151,9 +150,9 @@ exports.deleteProspect = (req, res) => {
       });
     } else {
       console.log("else");
-      res.status(400).json({ error: "unauthorized" });
+      res.status(400).json({ message: "unauthorized" });
     }
   } else {
-    res.status(400).json({ error: "prospect not found" });
+    res.status(400).json({ message: "prospect not found" });
   }
 };

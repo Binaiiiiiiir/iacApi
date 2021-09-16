@@ -32,7 +32,7 @@ const prospectSchema = new mongoose.Schema({
   },
   statu: {
     trye: String,
-    default: "Pas traitée",
+    default: "A traiter",
   },
   RegisteredAt: {
     type: Date,
