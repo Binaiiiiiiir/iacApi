@@ -30,7 +30,7 @@ const prospectSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  statu: {
+  status: {
     type: String,
     default: "pending",
   },

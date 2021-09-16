@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 exports.createStudent = async (req, res) => {
   const studentExists = await Student.findOne({
-    student: req.body.student,
+    refProspect: req.body.refProspect,
   });
   if (studentExists) {
     return res.status(403).json({
@@ -109,7 +109,7 @@ const updateStatuPros = (id) => {
     if (err) {
       return res.status(400).json({ error: "Prospect not found" });
     }
-    prospect = _.extend(data, { statu: false });
+    prospect = _.extend(data, { status: "pending" });
     prospect.save((err, prospect) => {
       if (err) {
         return res.status(403).json({ error: err });

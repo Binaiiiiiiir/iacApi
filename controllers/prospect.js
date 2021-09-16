@@ -138,7 +138,7 @@ exports.deleteProspect = (req, res) => {
   let prospect = req.prospect;
 
   if (prospect) {
-    if (!prospect.statu) {
+    if (prospect.status !== "student") {
       prospect.remove((err, prospect) => {
         if (err) {
           return res.status(400).json({ message: err });
