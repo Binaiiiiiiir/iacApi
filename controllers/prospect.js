@@ -110,7 +110,7 @@ exports.updateProspect = (req, res) => {
   let newProspect = req.body;
 
   prospect = _.extend(prospect, newProspect);
-  if (newProspect.statu === "Student") {
+  if (newProspect.statu === "student") {
     let newStudent = {
       name: prospect.name,
       cours: prospect.cours,

@@ -31,8 +31,8 @@ const prospectSchema = new mongoose.Schema({
     trim: true,
   },
   statu: {
-    trye: String,
-    default: "panding",
+    type: String,
+    default: "pending",
   },
   RegisteredAt: {
     type: Date,
