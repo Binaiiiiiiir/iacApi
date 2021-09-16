@@ -51,7 +51,6 @@ exports.getProspecs = (req, res) => {
   range = JSON.parse(range);
   sort = JSON.parse(sort);
   filter = JSON.parse(filter);
-  // filter.statu = false;
   if (filter.name) {
     filter.name = { $regex: ".*" + filter.name + ".*" };
   }
@@ -86,6 +85,7 @@ exports.getProspecs = (req, res) => {
   Prospect.countDocuments(function (err, c) {
     count = c;
   });
+  console.log(filter);
   let map = new Map([sort]);
   Prospect.find(filter)
     .sort(Object.fromEntries(map))
@@ -110,7 +110,7 @@ exports.updateProspect = (req, res) => {
   let newProspect = req.body;
 
   prospect = _.extend(prospect, newProspect);
-  if (newProspect.statu === "student") {
+  if (newProspect.status === "student") {
     let newStudent = {
       name: prospect.name,
       cours: prospect.cours,
@@ -130,7 +130,7 @@ exports.updateProspect = (req, res) => {
     if (err) {
       return res.status(403).json({ message: err });
     }
-    // res.json(prospect);
+    res.json(prospect);
   });
 };
 

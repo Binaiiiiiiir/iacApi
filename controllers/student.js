@@ -133,21 +133,28 @@ exports.deleteStudent = (req, res) => {
 };
 
 exports.addStudent = async (student) => {
+  const studentExists = await Student.findOne({
+    refProspect: student.refProspect,
+  });
+  if (studentExists) {
+    return Promise.reject({ error: "Student exist" });
+  }
   const studentAdd = await new Student(student);
 
   await studentAdd.save();
+  return Promise.resolve(studentAdd);
 };
 
-exports.deleteStudentByProspect = (id) => {
+exports.deleteStudentByProspect = (req, res, id) => {
   Student.findOne({ refProspect: id }).exec((err, data) => {
     if (err) {
       return res.status(400).json({ error: "Student not found" });
     }
-
-    data.remove((err, student) => {
-      if (err) {
-        return res.status(400).json({ error: err });
-      }
-    });
+    if (data)
+      data.remove((err, student) => {
+        if (err) {
+          return res.status(400).json({ error: err });
+        }
+      });
   });
 };
