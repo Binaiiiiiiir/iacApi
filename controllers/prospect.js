@@ -154,7 +154,9 @@ exports.deleteProspect = (req, res) => {
       });
     } else {
       console.log("else");
-      res.status(400).json({ message: "unauthorized" });
+      res.status(400).json({
+        message: "Unauthorized : cannot delete prospect when he is a student",
+      });
     }
   } else {
     res.status(400).json({ message: "prospect not found" });

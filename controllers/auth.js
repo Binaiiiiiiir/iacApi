@@ -17,6 +17,31 @@ exports.createUsers = async (req, res) => {
   res.status(200).json({ message: "user created successfully" });
 };
 
+exports.getUsers = (req, res) => {
+  let range = req.query.range || "[0,9]";
+  let sort = req.query.sort || '["name" , "ASC"]';
+  let count;
+  range = JSON.parse(range);
+  sort = JSON.parse(sort);
+  User.countDocuments(function (err, c) {
+    count = c;
+    let map = new Map([sort]);
+    User.find()
+      .sort(Object.fromEntries(map))
+      .then((data) => {
+        let formatData = [];
+        for (let i = 0; i < data.length; i++) {
+          formatData.push(data[i].transform());
+        }
+        res.set("Content-Range", `user ${range[0]}-${range[1] + 1}/${count}`);
+        res.status(200).json(formatData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+};
+
 exports.signin = (req, res) => {
   //find the user based on email
   const { email, password } = req.body;

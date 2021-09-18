@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const uuidv1 = require("uuid/v1");
 const crypto = require("crypto");
+const City = require("./city");
+const { ObjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -8,7 +10,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
-  grade: {
+  role: {
     type: String,
     required: true,
   },
@@ -21,7 +23,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  phoneNumber: {
+    type: String,
+    trim: true,
+  },
   salt: String,
+  city: {
+    type: ObjectId,
+    ref: City,
+    required: true,
+  },
+  isActivated: { type: Boolean, required: true },
   created: {
     type: Date,
     default: Date.now,
@@ -69,4 +81,25 @@ userSchema.methods = {
     }
   },
 };
+userSchema.method("transform", function () {
+  var obj = this.toObject();
+
+  //Rename fieldss
+  if (obj._id) {
+    obj.id = obj._id;
+    delete obj._id;
+    // if (obj.cours) {
+    //   obj.cours.id = obj.cours._id;
+    //   delete obj.cours._id;
+    // }
+    // if (obj.city) {
+    //   obj.city.id = obj.city._id;
+    //   delete obj.city._id;
+    // }
+  }
+
+  //
+
+  return obj;
+});
 module.exports = mongoose.model("User", userSchema);
