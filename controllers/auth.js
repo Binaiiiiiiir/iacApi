@@ -94,7 +94,7 @@ exports.updateUser = (req, res) => {
     if (err) {
       return res.status(403).json({ error: err });
     }
-    return res.status(200).json(user);
+    return res.status(200).json(user.transform());
   });
 };
 exports.deleteUser = (req, res) => {
