@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const _ = require("lodash");
 const expressJwt = require("express-jwt"); // for authorisation
 
 dotenv.config();
@@ -27,6 +28,7 @@ exports.getUsers = (req, res) => {
     count = c;
     let map = new Map([sort]);
     User.find()
+      .select("name role email phoneNumber city isActivated created")
       .sort(Object.fromEntries(map))
       .then((data) => {
         let formatData = [];
@@ -65,6 +67,43 @@ exports.signin = (req, res) => {
     // return respons with user and token to frontend cleint
     const { _id, email, name } = user;
     res.json({ token, user: { _id, email, name } });
+  });
+};
+
+exports.getUserOne = (req, res, next, id) => {
+  User.findById(id)
+    .select("name role email phoneNumber city isActivated created")
+    .exec((err, data) => {
+      req.user = data;
+
+      next();
+    });
+};
+exports.getUserById = (req, res) => {
+  user = req.user;
+  if (user) {
+    res.set("Content-Range", `user 0-1/1`);
+    res.json(user.transform());
+  } else res.status(400).json({ message: "User not found" });
+};
+exports.updateUser = (req, res) => {
+  let user = req.user;
+  user = _.extend(user, req.body);
+  console.log(user);
+  user.save((err, user) => {
+    if (err) {
+      return res.status(403).json({ error: err });
+    }
+    return res.status(200).json(user);
+  });
+};
+exports.deleteUser = (req, res) => {
+  let user = req.user;
+
+  user.remove((err, user) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    }
   });
 };
 
