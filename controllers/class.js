@@ -45,25 +45,25 @@ exports.getClasses = (req, res) => {
     filter.classLabel = { $regex: ".*" + filter.classLabel + ".*" };
   }
 
-  Class.countDocuments(function (err, c) {
+  Class.countDocuments(filter, function (err, c) {
     count = c;
+    let map = new Map([sort]);
+    Class.find(filter)
+      .sort(Object.fromEntries(map))
+      .skip(range[0])
+      .limit(range[1] + 1 - range[0])
+      .then((data) => {
+        let formatData = [];
+        for (let i = 0; i < data.length; i++) {
+          formatData.push(data[i].transform());
+        }
+        res.set("Content-Range", `class ${range[0]}-${range[1] + 1}/${count}`);
+        res.status(200).json(formatData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
-  let map = new Map([sort]);
-  Class.find(filter)
-    .sort(Object.fromEntries(map))
-    .skip(range[0])
-    .limit(range[1] + 1 - range[0])
-    .then((data) => {
-      let formatData = [];
-      for (let i = 0; i < data.length; i++) {
-        formatData.push(data[i].transform());
-      }
-      res.set("Content-Range", `class ${range[0]}-${range[1] + 1}/${count}`);
-      res.status(200).json(formatData);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 };
 
 exports.updateClass = (req, res) => {

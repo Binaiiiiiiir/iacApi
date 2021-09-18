@@ -81,28 +81,32 @@ exports.getProspecs = (req, res) => {
     };
     delete filter.id;
   }
-
-  Prospect.countDocuments(function (err, c) {
-    count = c;
-  });
   console.log(filter);
-  let map = new Map([sort]);
-  Prospect.find(filter)
-    .sort(Object.fromEntries(map))
-    .skip(range[0])
-    .limit(range[1] + 1 - range[0])
-    .then((data) => {
-      let formatData = [];
-      console.log(data.length, range);
-      for (let i = 0; i < data.length; i++) {
-        formatData.push(data[i].transform());
-      }
-      res.set("Content-Range", `prospect ${range[0]}-${range[1] + 1}/${count}`);
-      res.status(200).json(formatData);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+
+  Prospect.countDocuments(filter, function (err, c) {
+    count = c;
+    // console.log("hello", c);
+    let map = new Map([sort]);
+    Prospect.find(filter)
+      .sort(Object.fromEntries(map))
+      .skip(range[0])
+      .limit(range[1] + 1 - range[0])
+      .then((data) => {
+        let formatData = [];
+        console.log(data.length, range);
+        for (let i = 0; i < data.length; i++) {
+          formatData.push(data[i].transform());
+        }
+        res.set(
+          "Content-Range",
+          `prospect ${range[0]}-${range[1] + 1}/${count}`
+        );
+        res.status(200).json(formatData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 };
 
 exports.updateProspect = (req, res) => {

@@ -57,26 +57,29 @@ exports.getStudents = (req, res) => {
   }
 
   console.log(filter);
-  Student.countDocuments(function (err, c) {
+  Student.countDocuments(filter, function (err, c) {
     count = c;
+    let map = new Map([sort]);
+    // console.log(map);
+    Student.find(filter)
+      .sort(Object.fromEntries(map))
+      .skip(range[0])
+      .limit(range[1] + 1 - range[0])
+      .then((data) => {
+        let formatData = [];
+        for (let i = 0; i < data.length; i++) {
+          formatData.push(data[i].transform());
+        }
+        res.set(
+          "Content-Range",
+          `student ${range[0]}-${range[1] + 1}/${count}`
+        );
+        res.status(200).json(formatData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
-  let map = new Map([sort]);
-  // console.log(map);
-  Student.find(filter)
-    .sort(Object.fromEntries(map))
-    .skip(range[0])
-    .limit(range[1] + 1 - range[0])
-    .then((data) => {
-      let formatData = [];
-      for (let i = 0; i < data.length; i++) {
-        formatData.push(data[i].transform());
-      }
-      res.set("Content-Range", `student ${range[0]}-${range[1] + 1}/${count}`);
-      res.status(200).json(formatData);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 };
 
 exports.studentByIdBy = (req, res, next, id) => {

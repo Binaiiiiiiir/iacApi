@@ -48,28 +48,28 @@ exports.getFormations = (req, res) => {
     };
     delete filter.id;
   }
-  Formation.countDocuments(function (err, c) {
+  Formation.countDocuments(filter, function (err, c) {
     count = c;
+    let map = new Map([sort]);
+    Formation.find(filter)
+      .sort(Object.fromEntries(map))
+      .skip(range[0])
+      .limit(range[1] + 1 - range[0])
+      .then((data) => {
+        let formatData = [];
+        for (let i = 0; i < data.length; i++) {
+          formatData.push(data[i].transform());
+        }
+        res.set(
+          "Content-Range",
+          `formatiom ${range[0]}-${range[1] + 1}/${count}`
+        );
+        res.status(200).json(formatData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
-  let map = new Map([sort]);
-  Formation.find(filter)
-    .sort(Object.fromEntries(map))
-    .skip(range[0])
-    .limit(range[1] + 1 - range[0])
-    .then((data) => {
-      let formatData = [];
-      for (let i = 0; i < data.length; i++) {
-        formatData.push(data[i].transform());
-      }
-      res.set(
-        "Content-Range",
-        `formatiom ${range[0]}-${range[1] + 1}/${count}`
-      );
-      res.status(200).json(formatData);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 };
 
 exports.updateFormation = (req, res) => {
