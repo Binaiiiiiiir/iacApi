@@ -30,9 +30,6 @@ exports.getUsers = (req, res) => {
   if (filter.name) {
     filter.name = { $regex: ".*" + filter.name + ".*" };
   }
-  if (filter.email) {
-    filter.email = { $regex: ".*" + filter.email + ".*" };
-  }
   if (filter.phoneNumber) {
     filter.phoneNumber = { $regex: ".*" + filter.phoneNumber + ".*" };
   }
