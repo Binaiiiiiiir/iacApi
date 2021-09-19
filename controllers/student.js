@@ -107,31 +107,31 @@ exports.updateStudent = (req, res) => {
     // return res.status(200).json(student);
   });
 };
-const updateStatuPros = (id) => {
-  Prospect.findOne(id).exec((err, data) => {
-    if (err) {
-      return res.status(400).json({ error: "Prospect not found" });
-    }
-    prospect = _.extend(data, { status: "pending" });
-    prospect.save((err, prospect) => {
-      if (err) {
-        return res.status(403).json({ error: err });
-      }
-      // res.json(prospect);
-    });
-  });
-};
+// const updateStatuPros = (id) => {
+//   Prospect.findOne(id).exec((err, data) => {
+//     if (err) {
+//       return res.status(400).json({ error: "Prospect not found" });
+//     }
+//     prospect = _.extend(data, { status: "pending" });
+//     prospect.save((err, prospect) => {
+//       if (err) {
+//         return res.status(403).json({ error: err });
+//       }
+//       // res.json(prospect);
+//     });
+//   });
+// };
 
 exports.deleteStudent = (req, res) => {
   let student = req.student;
-  updateStatuPros(student.refProspect);
+
   student.remove((err, student) => {
     if (err) {
       return res.status(400).json({ error: err });
     }
-    // res.json({
-    //   message: "student deleted successfully",
-    // });
+    res.json({
+      message: "student deleted successfully",
+    });
   });
 };
 
@@ -148,16 +148,16 @@ exports.addStudent = async (student) => {
   return Promise.resolve(studentAdd);
 };
 
-exports.deleteStudentByProspect = (req, res, id) => {
-  Student.findOne({ refProspect: id }).exec((err, data) => {
-    if (err) {
-      return res.status(400).json({ error: "Student not found" });
-    }
-    if (data)
-      data.remove((err, student) => {
-        if (err) {
-          return res.status(400).json({ error: err });
-        }
-      });
-  });
-};
+// exports.deleteStudentByProspect = (req, res, id) => {
+//   Student.findOne({ refProspect: id }).exec((err, data) => {
+//     if (err) {
+//       return res.status(400).json({ error: "Student not found" });
+//     }
+//     if (data)
+//       data.remove((err, student) => {
+//         if (err) {
+//           return res.status(400).json({ error: err });
+//         }
+//       });
+//   });
+// };

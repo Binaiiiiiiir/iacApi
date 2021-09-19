@@ -30,9 +30,6 @@ exports.getUsers = (req, res) => {
   if (filter.name) {
     filter.name = { $regex: ".*" + filter.name + ".*" };
   }
-  if (filter.phoneNumber) {
-    filter.phoneNumber = { $regex: ".*" + filter.phoneNumber + ".*" };
-  }
   if (filter.id) {
     filter._id = {
       $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],

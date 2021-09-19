@@ -2,7 +2,7 @@ const Prospect = require("../models/prospect");
 // const formidable = require("formidable");
 const _ = require("lodash");
 const mongoose = require("mongoose");
-const { addStudent, deleteStudentByProspect } = require("./student");
+const { addStudent } = require("./student");
 
 exports.getProspectOne = (req, res, next, id) => {
   Prospect.findById(id).exec((err, data) => {
@@ -32,7 +32,7 @@ exports.createProspect = async (req, res) => {
     phoneNumber: req.body.phoneNumber,
   });
   if (studentsExists) {
-    return res.status(403).json({
+    return res.status(400).json({
       message: "sorry something went worng try again later",
       status: 400,
     });
@@ -122,42 +122,39 @@ exports.updateProspect = (req, res) => {
       city: prospect.city,
       email: prospect.email,
       phoneNumber: prospect.phoneNumber,
-      refProspect: prospect._id,
       RegisteredAt: prospect.RegisteredAt,
     };
     addStudent(newStudent);
+    prospect.remove((err, prospect) => {
+      if (err) {
+        return res.status(400).json({
+          message: err,
+        });
+      }
+      res.json({ student: prospect });
+    });
   } else {
-    deleteStudentByProspect(req.prospect._id);
+    prospect.save((err, prospect) => {
+      if (err) {
+        return res.status(403).json({ message: err });
+      }
+      res.json(prospect);
+    });
   }
-
-  prospect.save((err, prospect) => {
-    if (err) {
-      return res.status(403).json({ message: err });
-    }
-    res.json(prospect);
-  });
 };
 
 exports.deleteProspect = (req, res) => {
   let prospect = req.prospect;
 
   if (prospect) {
-    if (prospect.status !== "student") {
-      prospect.remove((err, prospect) => {
-        if (err) {
-          return res.status(400).json({ message: err });
-        }
-
-        res.json({
-          message: "prospect deleted successfully",
-        });
+    prospect.remove((err, prospect) => {
+      if (err) {
+        return res.status(400).json({ message: err });
+      }
+      res.json({
+        message: "Prospect deleted successfully",
       });
-    } else {
-      console.log("else");
-      res.status(400).json({
-        message: "Unauthorized : cannot delete prospect when he is a student",
-      });
-    }
+    });
   } else {
     res.status(400).json({ message: "prospect not found" });
   }

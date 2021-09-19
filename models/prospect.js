@@ -16,14 +16,14 @@ const prospectSchema = new mongoose.Schema({
   cours: [
     {
       type: ObjectId,
-      require: true,
+      required: true,
       ref: Cours,
     },
   ],
   city: {
     type: ObjectId,
     ref: City,
-    require: true,
+    required: true,
   },
   phoneNumber: {
     type: String,
@@ -49,6 +49,7 @@ prospectSchema.pre("save", function (next) {
 
   // if created_at doesn't exist, add to that field
   if (!this.RegisteredAt) {
+    console.log();
     console.log("In Pre save");
     this.RegisteredAt = currentDate;
   }
