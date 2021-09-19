@@ -24,7 +24,7 @@ exports.getProspectById = (req, res) => {
   if (prospect) {
     res.set("Content-Range", `prospect 0-1/1`);
     res.json(prospect.transform());
-  } else res.status(400).json({ message: "Prospect not found" });
+  }
 };
 
 exports.createProspect = async (req, res) => {
