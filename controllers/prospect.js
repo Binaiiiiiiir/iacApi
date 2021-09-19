@@ -6,9 +6,9 @@ const { addStudent } = require("./student");
 
 exports.getProspectOne = (req, res, next, id) => {
   Prospect.findById(id).exec((err, data) => {
-    // if (err) {
-    //   return res.status(400).json({ error: "Prospect not found" });
-    // }
+    if (err) {
+      return res.status(400).json({ error: "Prospect not found" });
+    }
     // res.set("Content-Range", `0-1/${data.length}`);
     // for (let i = 0; i < data.cours.length; i++) {
     //   data.cours[i] = data.cours[i].transform();
