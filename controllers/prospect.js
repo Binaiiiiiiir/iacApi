@@ -146,16 +146,12 @@ exports.updateProspect = (req, res) => {
 exports.deleteProspect = (req, res) => {
   let prospect = req.prospect;
 
-  if (prospect) {
-    prospect.remove((err, prospect) => {
-      if (err) {
-        return res.status(400).json({ message: err });
-      }
-      res.json({
-        message: "Prospect deleted successfully",
-      });
+  prospect.remove((err, prospect) => {
+    if (err) {
+      return res.status(400).json({ message: err });
+    }
+    res.json({
+      message: "Prospect deleted successfully",
     });
-  } else {
-    res.status(400).json({ message: "prospect not found" });
-  }
+  });
 };
