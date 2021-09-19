@@ -2,6 +2,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const _ = require("lodash");
+const mongoose = require("mongoose");
 const expressJwt = require("express-jwt"); // for authorisation
 
 dotenv.config();
@@ -21,13 +22,32 @@ exports.createUsers = async (req, res) => {
 exports.getUsers = (req, res) => {
   let range = req.query.range || "[0,9]";
   let sort = req.query.sort || '["name" , "ASC"]';
+  let filter = req.query.filter || "{}";
   let count;
   range = JSON.parse(range);
   sort = JSON.parse(sort);
-  User.countDocuments(function (err, c) {
+  filter = JSON.parse(filter);
+  if (filter.name) {
+    filter.name = { $regex: ".*" + filter.name + ".*" };
+  }
+  if (filter.email) {
+    filter.email = { $regex: ".*" + filter.email + ".*" };
+  }
+  if (filter.phoneNumber) {
+    filter.phoneNumber = { $regex: ".*" + filter.phoneNumber + ".*" };
+  }
+  if (filter.id) {
+    filter._id = {
+      $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
+    };
+    delete filter.id;
+  }
+
+  console.log(filter);
+  User.countDocuments(filter, function (err, c) {
     count = c;
     let map = new Map([sort]);
-    User.find()
+    User.find(filter)
       .select("name role email phoneNumber city isActivated created")
       .sort(Object.fromEntries(map))
       .then((data) => {

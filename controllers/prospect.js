@@ -43,7 +43,7 @@ exports.createProspect = async (req, res) => {
   res.status(200).json({ message: "operation succeded", status: 200 });
 };
 
-exports.getProspecs = (req, res) => {
+exports.getProspects = (req, res) => {
   let range = req.query.range || "[0,9]";
   let sort = req.query.sort || '["RegisteredAt" , "DESC"]';
   let filter = req.query.filter || "{}";
