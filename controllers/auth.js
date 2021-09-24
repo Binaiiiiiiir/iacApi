@@ -98,7 +98,7 @@ exports.getUserById = (req, res) => {
   if (user) {
     res.set("Content-Range", `user 0-1/1`);
     res.json(user.transform());
-  } else res.status(400).json({ message: "User not found" });
+  } else res.status(204).json({ message: "User not found" });
 };
 exports.updateUser = (req, res) => {
   let user = req.user;
