@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
     ref: City,
     required: true,
   },
-  isActivated: { type: Boolean, required: true },
+  isActivated: { type: Boolean, default: false },
   created: {
     type: Date,
     default: Date.now,
