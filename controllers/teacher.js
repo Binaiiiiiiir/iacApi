@@ -52,7 +52,7 @@ exports.getTeacher = (req, res) => {
   }
   if (filter.course) {
     filter.course = {
-      $in: mongoose.Types.ObjectId(filter.cours),
+      $in: mongoose.Types.ObjectId(filter.course),
     };
   }
   if (filter.id) {
