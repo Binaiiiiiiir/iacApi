@@ -50,6 +50,11 @@ exports.getTeacher = (req, res) => {
       $all: [...filter.cours.map((c) => mongoose.Types.ObjectId(c))],
     };
   }
+  if (filter.course) {
+    filter.course = {
+      $in: mongoose.Types.ObjectId(filter.cours),
+    };
+  }
   if (filter.id) {
     filter._id = {
       $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
@@ -103,5 +108,41 @@ exports.deleteTeacher = (req, res) => {
     // res.json({
     //   message: "teacher deleted successfully",
     // });
+  });
+};
+
+exports.getTeacherByCourses = (req, res) => {
+  // let range = req.query.range || "[0,9]";
+  let sort = req.query.sort || "[]";
+  let filter = req.query.filter || "{}";
+  let count;
+
+  sort = JSON.parse(sort);
+  filter = JSON.parse(filter);
+
+  if (filter.course) {
+    filter.course = {
+      $in: mongoose.Types.ObjectId(filter.cours),
+    };
+  }
+
+  console.log(filter);
+  Teacher.countDocuments(filter, function (err, c) {
+    count = c;
+    let map = new Map([sort]);
+    // console.log(map);
+    Teacher.find(filter)
+      .sort(Object.fromEntries(map))
+      .then((data) => {
+        let formatData = [];
+        for (let i = 0; i < data.length; i++) {
+          formatData.push(data[i].transform());
+        }
+        res.set("Content-Range", `Teacher ${0}-${count}/${count}`);
+        res.status(200).json(formatData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
 };
