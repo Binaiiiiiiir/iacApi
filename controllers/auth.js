@@ -16,7 +16,7 @@ exports.createUsers = async (req, res) => {
 
   const user = await new User(req.body);
   await user.save();
-  res.status(200).json({ message: "user created successfully" });
+  res.status(200).json(req.body);
 };
 
 exports.getUsers = (req, res) => {
@@ -93,6 +93,7 @@ exports.getUserOne = (req, res, next, id) => {
       next();
     });
 };
+
 exports.getUserById = (req, res) => {
   user = req.user;
   if (user) {
@@ -100,6 +101,7 @@ exports.getUserById = (req, res) => {
     res.json(user.transform());
   } else res.status(204).json({ message: "User not found" });
 };
+
 exports.updateUser = (req, res) => {
   let user = req.user;
   user = _.extend(user, req.body);

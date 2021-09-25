@@ -50,11 +50,12 @@ exports.getTeacher = (req, res) => {
       $all: [...filter.cours.map((c) => mongoose.Types.ObjectId(c))],
     };
   }
-  if (filter.course) {
-    filter.course = {
-      $in: [mongoose.Types.ObjectId(filter.course)],
+  if (filter.cours) {
+    filter.cours = {
+      $all: [...filter.cours.map((c) => mongoose.Types.ObjectId(c))],
     };
   }
+
   if (filter.id) {
     filter._id = {
       $in: [...filter.id.map((c) => mongoose.Types.ObjectId(c))],
