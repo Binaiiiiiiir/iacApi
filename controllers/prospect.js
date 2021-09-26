@@ -138,7 +138,7 @@ exports.updateProspect = (req, res) => {
       if (err) {
         return res.status(403).json({ message: err });
       }
-      res.json(prospect);
+      res.json(prospect.transform());
     });
   }
 };
