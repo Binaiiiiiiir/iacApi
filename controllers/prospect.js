@@ -7,7 +7,7 @@ const { addStudent } = require("./student");
 exports.getProspectOne = (req, res, next, id) => {
   Prospect.findById(id).exec((err, data) => {
     if (err) {
-      return res.status(204).json({ error: "Prospect not found" });
+      return res.status(200).json({ error: "Prospect not found" });
     }
     // res.set("Content-Range", `0-1/${data.length}`);
     // for (let i = 0; i < data.cours.length; i++) {
@@ -24,7 +24,7 @@ exports.getProspectById = (req, res) => {
   if (prospect) {
     res.set("Content-Range", `prospect 0-1/1`);
     res.json(prospect.transform());
-  } else res.status(204).json({ message: "Prospect not found" });
+  } else res.status(200).json({ message: "Prospect not found" });
 };
 
 exports.createProspect = async (req, res) => {
@@ -150,8 +150,6 @@ exports.deleteProspect = (req, res) => {
     if (err) {
       return res.status(400).json({ message: err });
     }
-    res.json({
-      message: "Prospect deleted successfully",
-    });
+    res.json(prospect.transform());
   });
 };
