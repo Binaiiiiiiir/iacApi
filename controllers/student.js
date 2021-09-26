@@ -81,20 +81,22 @@ exports.getStudents = (req, res) => {
       });
   });
 };
-
-exports.studentByIdBy = (req, res, next, id) => {
+exports.getOneStudent = (req, res, next, id) => {
   Student.findById(id).exec((err, data) => {
     if (err) {
-      return res.status(400).json({ error: "Prospect not found" });
+      return res.status(204).json({ error: "Student not found" });
     }
     req.student = data;
-    // for (let i = 0; i < data.cours.length; i++) {
-    //   data.cours[i] = data.cours[i].transform();
-    // }
-    res.set("Content-Range", `0-1/${data.length}`);
-    res.json(data.transform());
     next();
   });
+};
+
+exports.studentByIdBy = (req, res) => {
+  student = req.student;
+  if (student) {
+    res.set("Content-Range", `student 0-1/1`);
+    res.json(student.transform());
+  } else res.status(204).json({ message: "Prospect not found" });
 };
 
 exports.updateStudent = (req, res) => {
@@ -104,23 +106,9 @@ exports.updateStudent = (req, res) => {
     if (err) {
       return res.status(403).json({ error: err });
     }
-    // return res.status(200).json(student);
+    return res.status(200).json(student);
   });
 };
-// const updateStatuPros = (id) => {
-//   Prospect.findOne(id).exec((err, data) => {
-//     if (err) {
-//       return res.status(400).json({ error: "Prospect not found" });
-//     }
-//     prospect = _.extend(data, { status: "pending" });
-//     prospect.save((err, prospect) => {
-//       if (err) {
-//         return res.status(403).json({ error: err });
-//       }
-//       // res.json(prospect);
-//     });
-//   });
-// };
 
 exports.deleteStudent = (req, res) => {
   let student = req.student;
@@ -147,20 +135,6 @@ exports.addStudent = async (student) => {
   await studentAdd.save();
   return Promise.resolve(studentAdd);
 };
-
-// exports.deleteStudentByProspect = (req, res, id) => {
-//   Student.findOne({ refProspect: id }).exec((err, data) => {
-//     if (err) {
-//       return res.status(400).json({ error: "Student not found" });
-//     }
-//     if (data)
-//       data.remove((err, student) => {
-//         if (err) {
-//           return res.status(400).json({ error: err });
-//         }
-//       });
-//   });
-// };
 
 exports.getStudentsByCourses = (req, res) => {
   // let range = req.query.range || "[0,9]";
