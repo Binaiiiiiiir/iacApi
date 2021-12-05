@@ -89,18 +89,6 @@ classSchema.pre("save", function (next) {
   } else {
     next();
   }
-
-  // Class.count(
-  //   { "class.formation": this.formation, "class.cours": this.cours },
-  //   (err, dos) => {
-  //     if (err) {
-  //       console.log(err);
-  //     }
-  //     console.log(dos);
-  //   }
-  // );
-
-  // if created_at doesn't exist, add to that field
 });
 
 classSchema.method("transform", function () {
