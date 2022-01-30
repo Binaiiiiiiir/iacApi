@@ -2,4 +2,10 @@
 
 # @ : darrin.ezio@zooape.net
 
-# pw : iac@123
+# pw : Helloworld@34
+
+## gmail and Heroku Email and password
+
+# @ : itiac.rabat@gmail.com
+
+# pw : Helloworld@34

@@ -60,9 +60,9 @@ exports.getUsers = (req, res) => {
 
 exports.signin = (req, res) => {
   //find the user based on email
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   //if error or no user
-  User.findOne({ email }, (err, user) => {
+  User.findOne({ email: username }, (err, user) => {
     if (err || !user) {
       return res.status(401).json({
         error: "User with that email does not exist. Please signup",
@@ -70,8 +70,13 @@ exports.signin = (req, res) => {
     }
     // if user found make sure the email end the password match
     if (!user.authenticate(password)) {
-      return res.status(401).json({
+      return res.status(300).json({
         error: "Email and password do not match",
+      });
+    }
+    if (!user.isActivated) {
+      return res.status(300).json({
+        error: "your email is desaibled contact ur admin",
       });
     }
     //generte a token with user id and secret key
