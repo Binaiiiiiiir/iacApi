@@ -46,6 +46,7 @@ const teacher = require("./routes/teacher");
 const formation = require("./routes/formation");
 const student = require("./routes/student");
 const classRouter = require("./routes/class");
+const cashRouter = require("./routes/cash");
 
 app.use("/", authRouter);
 app.use("/", prospect);
@@ -55,6 +56,7 @@ app.use("/", teacher);
 app.use("/", formation);
 app.use("/", student);
 app.use("/", classRouter);
+app.use("/", cashRouter);
 
 const port = process.env.PORT || 8080;
 

@@ -1,5 +1,4 @@
-const User = require("../models/user");
-const jwt = require("jsonwebtoken");
+const User = require("../models/user");const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const _ = require("lodash");
 const mongoose = require("mongoose");
@@ -76,7 +75,7 @@ exports.signin = (req, res) => {
     }
     if (!user.isActivated) {
       return res.status(300).json({
-        error: "your email is desaibled contact ur admin",
+        error: "your email is desaibled contact your admin",
       });
     }
     //generte a token with user id and secret key
@@ -84,8 +83,8 @@ exports.signin = (req, res) => {
     //persist the token as 't' in cookie with expiry date
     res.cookie("t", token, { expire: new Date() + 1300 });
     // return respons with user and token to frontend cleint
-    const { _id, email, name } = user;
-    res.json({ token, user: { _id, email, name } });
+    const { _id, email, name, role } = user;
+    res.json({ token, id: _id, email, name, role });
   });
 };
 
